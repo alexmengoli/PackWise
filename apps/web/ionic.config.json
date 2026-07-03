@@ -1,0 +1,7 @@
+{
+  "name": "PackWise",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

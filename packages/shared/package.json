@@ -1,0 +1,26 @@
+{
+  "name": "@packwise/shared",
+  "version": "0.1.0",
+  "description": "Shared TypeScript models and domain utilities for PackWise.",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "tsc -b --clean"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.0"
+  }
+}

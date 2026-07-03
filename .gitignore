@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+www/
+out-tsc/
+coverage/
+.angular/
+.ionic/
+
+# Native/mobile generated output
+platforms/
+plugins/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# OS
+.DS_Store
+Thumbs.db

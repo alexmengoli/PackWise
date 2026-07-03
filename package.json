@@ -1,0 +1,16 @@
+{
+  "name": "packwise",
+  "version": "1.0.0",
+  "description": "Open-source, offline-first packing list and gear organizer with optional cloud sync.",
+  "private": true,
+  "author": "Alex Mengoli (MxApps)",
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "start": "pnpm --filter @packwise/web start",
+    "build": "pnpm --filter @packwise/shared build && pnpm --filter @packwise/web build",
+    "test": "pnpm --filter @packwise/web test",
+    "lint": "pnpm --filter @packwise/web lint",
+    "build:shared": "pnpm --filter @packwise/shared build"
+  }
+}
