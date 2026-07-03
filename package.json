@@ -9,7 +9,6 @@
   "scripts": {
     "start": "pnpm --filter @packwise/client start",
     "build": "pnpm --filter @packwise/shared build && pnpm --filter @packwise/client build",
-    "test": "pnpm --filter @packwise/client test",
     "lint": "pnpm --filter @packwise/client lint",
     "build:shared": "pnpm --filter @packwise/shared build"
   }
