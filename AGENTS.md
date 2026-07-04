@@ -101,7 +101,7 @@ When changing persisted data:
 - Use clear role suffixes for other file kinds when applicable, such as `.component.ts`, `.directive.ts`, `.pipe.ts`, `.guard.ts`, `.resolver.ts`, `.adapter.service.ts`, and `.repository.service.ts`.
 - Prefer explicit, descriptive names.
 - Always declare types explicitly.
-- Do not add explicit type annotations to Angular helper results such as `inject()`, `input()`, `output()`, or `viewChild()`; let Angular infer those types.
+- Do not add explicit type annotations to Angular helper results such as `inject()`, `input()`, `output()`, `viewChild()`, `signal()`, or `computed()`; let Angular infer those types.
 - Always declare method visibility and return types.
 - Use `private readonly` for private dependencies and fields that should not be reassigned.
 - Do not define types or interfaces inside classes; create dedicated type files when new types are needed.

@@ -1,0 +1,158 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.home-page {
+  min-height: 100dvh;
+  padding: 1.25rem 1rem 2rem;
+}
+
+.home-page__layout {
+  display: grid;
+  gap: 1rem;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.home-page__hero {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.home-page__eyebrow {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mat-sys-primary);
+}
+
+.home-page__title {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.home-page__subtitle {
+  margin: 0;
+  max-width: 40rem;
+  line-height: 1.6;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.home-section {
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+.home-section mat-card-content {
+  display: grid;
+  gap: 1rem;
+  padding: 1.125rem;
+}
+
+.home-section__heading {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.home-section__title,
+.home-section__subtitle {
+  margin: 0;
+}
+
+.home-section__title {
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.home-section__subtitle {
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.home-page__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  width: 100%;
+}
+
+.home-page__chips .mdc-evolution-chip-set__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.home-page__chips .mdc-evolution-chip,
+.home-page__chips .mat-mdc-chip {
+  max-width: 100%;
+}
+
+.home-page__loading,
+.home-page__empty {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.home-page__loading p,
+.home-page__empty {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.home-page__list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.packing-item {
+  border-radius: 1rem;
+  transition: opacity 160ms ease;
+}
+
+.packing-item--packed {
+  opacity: 0.7;
+}
+
+.packing-item mat-card-content {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.packing-item__checkbox {
+  width: 100%;
+}
+
+.packing-item__checkbox :where(.mdc-form-field, .mdc-label) {
+  width: 100%;
+}
+
+.packing-item__name--packed {
+  text-decoration: line-through;
+}
+
+.packing-item__description {
+  margin: 0 0 0 3rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.packing-item__checkbox :where(.mdc-label) {
+  white-space: normal;
+}
+
+@media (min-width: 640px) {
+  .home-page {
+    padding-inline: 1.5rem;
+  }
+
+  .home-section mat-card-content {
+    padding: 1.5rem;
+  }
+}

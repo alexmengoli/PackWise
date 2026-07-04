@@ -1,0 +1,73 @@
+<main class="home-page">
+  <div class="home-page__layout">
+    <header class="home-page__hero">
+      <p class="home-page__eyebrow">PackWise</p>
+      <h1 class="home-page__title">What are you preparing?</h1>
+      <p class="home-page__subtitle">Pick one or more activities and your packing list updates instantly.</p>
+    </header>
+
+    <mat-card appearance="outlined" class="home-section">
+      <mat-card-content>
+        <div class="home-section__heading">
+          <h2 class="home-section__title">Activities</h2>
+          <p class="home-section__subtitle">Select every context that applies to this trip.</p>
+        </div>
+
+        @if (loading()) {
+          <div class="home-page__loading">
+            <mat-progress-bar mode="indeterminate" />
+            <p>Loading your local data...</p>
+          </div>
+        } @else {
+          <mat-chip-listbox class="home-page__chips" aria-label="Activities" multiple>
+            @for (activity of activities(); track activity.id) {
+              <mat-chip-option
+                [selected]="isSelected(activity.id)"
+                [highlighted]="isSelected(activity.id)"
+                (click)="toggleActivity(activity.id)"
+              >
+                {{ activity.name }} ({{ itemCount(activity.id) }})
+              </mat-chip-option>
+            }
+          </mat-chip-listbox>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="home-section">
+      <mat-card-content>
+        <div class="home-section__heading">
+          <h2 class="home-section__title">To bring</h2>
+          <p class="home-section__subtitle">Use the checklist as you pack.</p>
+        </div>
+
+        @if (loading()) {
+          <div class="home-page__loading">
+            <mat-progress-bar mode="indeterminate" />
+            <p>Preparing your packing view...</p>
+          </div>
+        } @else if (selectedActivityIds().length === 0) {
+          <p class="home-page__empty">Select one or more activities to see what to bring.</p>
+        } @else if (packingItems().length === 0) {
+          <p class="home-page__empty">No items match the selected activities yet.</p>
+        } @else {
+          <div class="home-page__list">
+            @for (item of packingItems(); track item.id) {
+              <mat-card appearance="filled" class="packing-item" [class.packing-item--packed]="isPacked(item.id)">
+                <mat-card-content>
+                  <mat-checkbox class="packing-item__checkbox" [checked]="isPacked(item.id)" (change)="togglePacked(item.id)">
+                    <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{ item.name }}</span>
+                  </mat-checkbox>
+
+                  @if (item.description) {
+                    <p class="packing-item__description">{{ item.description }}</p>
+                  }
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>
