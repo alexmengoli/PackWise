@@ -1,7 +1,6 @@
 <main class="home-page">
   <div class="home-page__layout">
     <header class="home-page__hero">
-      <p class="home-page__eyebrow">PackWise</p>
       <h1 class="home-page__title">What are you preparing?</h1>
       <p class="home-page__subtitle">Pick one or more activities and your packing list updates instantly.</p>
     </header>
@@ -68,8 +67,14 @@
             @for (item of packingItems(); track item.id) {
               <mat-card appearance="filled" class="packing-item" [class.packing-item--packed]="isPacked(item.id)">
                 <mat-card-content>
-                  <mat-checkbox class="packing-item__checkbox" [checked]="isPacked(item.id)" (change)="togglePacked(item.id)">
-                    <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{ item.name }}</span>
+                  <mat-checkbox
+                    class="packing-item__checkbox"
+                    [checked]="isPacked(item.id)"
+                    (change)="togglePacked(item.id)"
+                  >
+                    <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{
+                      item.name
+                    }}</span>
                   </mat-checkbox>
 
                   @if (item.description) {
