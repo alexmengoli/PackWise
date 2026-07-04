@@ -17,7 +17,7 @@ Do not make cloud sync, authentication, or internet access required for the core
 
 This repo is a pnpm monorepo named `packwise`.
 
-- `apps/client`: the complete Ionic + Angular client application.
+- `apps/client`: the complete plain Angular client application.
 - `packages/shared`: framework-independent TypeScript models, types, and reusable domain utilities.
 - `package.json`: root workspace scripts that delegate to packages.
 - `pnpm-workspace.yaml`: pnpm workspace package discovery.
@@ -25,7 +25,7 @@ This repo is a pnpm monorepo named `packwise`.
 - `README.md`: human-facing project overview and commands.
 - `.gitignore`: repository-wide ignore rules.
 
-Keep app-specific UI and Ionic/Angular code inside `apps/client`. Keep reusable business types and pure domain logic inside `packages/shared`. Do not put persistence, browser APIs, Angular services, or UI concerns in `packages/shared`.
+Keep app-specific UI and Angular code inside `apps/client`. Keep reusable business types and pure domain logic inside `packages/shared`. Do not put persistence, browser APIs, Angular services, or UI concerns in `packages/shared`.
 
 ## Package manager
 
@@ -81,7 +81,7 @@ Keep concerns separated:
 - Local storage access should be isolated behind a small data layer.
 - Sync code, when added, must be isolated from local-only functionality.
 - The app must continue working when offline or signed out.
-- In the Ionic + Angular app, prefer Angular standalone components, `loadComponent`, `bootstrapApplication`, and Ionic standalone APIs over new `NgModule` files.
+- In the Angular app, prefer standalone components, `loadComponent`, and `bootstrapApplication` over new `NgModule` files.
 
 When changing persisted data:
 
