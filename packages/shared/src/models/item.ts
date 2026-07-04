@@ -1,9 +1,11 @@
-export interface PackingItem {
+export interface Item {
   id: string;
   name: string;
-  activityIds: string[];
-  quantity: number;
+  description?: string;
+  weight?: string;
+  size?: string;
   notes?: string;
+  activityIds: string[];
   createdAt: string;
   updatedAt: string;
 }
