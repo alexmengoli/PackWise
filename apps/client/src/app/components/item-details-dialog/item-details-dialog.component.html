@@ -2,7 +2,7 @@
 
 <mat-dialog-content>
   <form class="details-form" [formGroup]="form">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" autocomplete="off" />
       @if (form.controls.name.hasError('required')) {
@@ -10,45 +10,57 @@
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" rows="3"></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Category</mat-label>
-      <input matInput formControlName="categoryId" autocomplete="off" />
-    </mat-form-field>
+    <section class="details-form__activity" aria-labelledby="item-activity-section-title">
+      <h3 id="item-activity-section-title" class="details-form__section-title">Activity</h3>
 
-    <mat-checkbox formControlName="mandatory">Use for every activity</mat-checkbox>
+      <mat-checkbox formControlName="mandatory">Use for every activity</mat-checkbox>
 
-    @if (!form.controls.mandatory.value) {
-      <mat-form-field appearance="outline">
-        <mat-label>Activities</mat-label>
-        <mat-select formControlName="activityIds" multiple>
-          @for (activity of activities(); track activity.id) {
-            <mat-option [value]="activity.id">{{ activity.name }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    }
+      @if (!form.controls.mandatory.value) {
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Activities</mat-label>
+          <mat-select formControlName="activityIds" multiple>
+            @for (activity of activities(); track activity.id) {
+              <mat-option [value]="activity.id">{{ activity.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+    </section>
 
-    <div class="details-form__grid">
-      <mat-form-field appearance="outline">
-        <mat-label>Size</mat-label>
-        <input matInput formControlName="size" autocomplete="off" />
-      </mat-form-field>
+    <mat-expansion-panel class="details-form__other-panel" [expanded]="otherPanelExpanded">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Other</mat-panel-title>
+      </mat-expansion-panel-header>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Weight</mat-label>
-        <input matInput formControlName="weight" autocomplete="off" />
-      </mat-form-field>
-    </div>
+      <div class="details-form__other-content">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Category</mat-label>
+          <input matInput formControlName="categoryId" autocomplete="off" />
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Notes</mat-label>
-      <textarea matInput formControlName="notes" rows="3"></textarea>
-    </mat-form-field>
+        <div class="details-form__grid">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Weight</mat-label>
+            <input matInput formControlName="weight" autocomplete="off" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Size</mat-label>
+            <input matInput formControlName="size" autocomplete="off" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
   </form>
 </mat-dialog-content>
 

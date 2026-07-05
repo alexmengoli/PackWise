@@ -3,10 +3,12 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
+import type { Item } from '@packwise/shared';
 import type { CreateItemInput } from '../../types/data.types';
 import type { ItemDetailsDialogData } from './item-details-dialog.types';
 
@@ -16,6 +18,7 @@ import type { ItemDetailsDialogData } from './item-details-dialog.types';
     MatButtonModule,
     MatCheckboxModule,
     MatDialogModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -35,6 +38,7 @@ export class ItemDetailsDialogComponent {
   // data
   protected readonly activities = computed(() => this.data.activities);
   protected readonly isEditing: boolean = Boolean(this.data.item);
+  protected readonly otherPanelExpanded: boolean = hasOtherDetails(this.data.item);
   protected readonly form = this.formBuilder.group({
     name: [this.data.item?.name ?? '', [Validators.required]],
     description: [this.data.item?.description ?? ''],
@@ -77,4 +81,8 @@ function optionalTrim(value: string): string | undefined {
   const trimmedValue: string = value.trim();
 
   return trimmedValue.length > 0 ? trimmedValue : undefined;
+}
+
+function hasOtherDetails(item: Item | undefined): boolean {
+  return Boolean(item?.categoryId || item?.weight || item?.size || item?.notes);
 }
