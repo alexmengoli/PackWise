@@ -7,9 +7,17 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ITEM_CATEGORIES, type Activity, type Item, type ItemCategoryDefinition } from '@packwise/shared';
 import type { Observable } from 'rxjs';
 import { ActivityDetailsDialogComponent } from '../../components/activity-details-dialog/activity-details-dialog.component';
+import type {
+  ActivityDetailsDialogData,
+  ActivityDetailsDialogResult,
+} from '../../components/activity-details-dialog/activity-details-dialog.types';
 import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
 import type { ConfirmationDialogData } from '../../components/confirmation-dialog/confirmation-dialog.types';
 import { ItemDetailsDialogComponent } from '../../components/item-details-dialog/item-details-dialog.component';
+import type {
+  ItemDetailsDialogData,
+  ItemDetailsDialogResult,
+} from '../../components/item-details-dialog/item-details-dialog.types';
 import { ActivityRepositoryService } from '../../services/activity.repository.service';
 import { ItemRepositoryService } from '../../services/item.repository.service';
 import type { CreateActivityInput, CreateItemInput } from '../../types/data.types';
@@ -127,55 +135,116 @@ export class LibraryPage {
 
   private openActivityDialog(activity?: Activity): void {
     this.dialog
-      .open<ActivityDetailsDialogComponent, { activity?: Activity }, CreateActivityInput | undefined>(
+      .open<ActivityDetailsDialogComponent, ActivityDetailsDialogData, ActivityDetailsDialogResult | undefined>(
         ActivityDetailsDialogComponent,
         {
           maxWidth: 'calc(100vw - 1rem)',
           width: '38rem',
           data: {
             activity,
+            findDuplicateActivity: (name: string, ignoredActivityId?: string): Activity | undefined =>
+              this.findActivityByName(name, ignoredActivityId),
           },
         },
       )
       .afterClosed()
-      .subscribe((input: CreateActivityInput | undefined): void => {
-        if (!input) {
+      .subscribe((result: ActivityDetailsDialogResult | undefined): void => {
+        if (!result) {
           return;
         }
 
-        const operation: Promise<Activity> = activity
-          ? this.activityRepository.updateActivity(activity.id, input)
-          : this.activityRepository.createActivity(input);
+        if (result.openActivityId) {
+          this.openActivityById(result.openActivityId);
 
-        void operation.catch((error: unknown): void => console.error(error));
+          return;
+        }
+
+        if (result.input) {
+          void this.saveActivity(result.input, result.activityId ?? activity?.id).catch((error: unknown): void =>
+            console.error(error),
+          );
+        }
       });
   }
 
   private openItemDialog(item?: Item): void {
     this.dialog
-      .open<ItemDetailsDialogComponent, { activities: Activity[]; item?: Item }, CreateItemInput | undefined>(
+      .open<ItemDetailsDialogComponent, ItemDetailsDialogData, ItemDetailsDialogResult | undefined>(
         ItemDetailsDialogComponent,
         {
           maxWidth: 'calc(100vw - 1rem)',
           width: '38rem',
           data: {
             activities: this.activities(),
+            findDuplicateItem: (name: string, ignoredItemId?: string): Item | undefined =>
+              this.findItemByName(name, ignoredItemId),
             item,
           },
         },
       )
       .afterClosed()
-      .subscribe((input: CreateItemInput | undefined): void => {
-        if (!input) {
+      .subscribe((result: ItemDetailsDialogResult | undefined): void => {
+        if (!result) {
           return;
         }
 
-        const operation: Promise<Item> = item
-          ? this.itemRepository.updateItem(item.id, input)
-          : this.itemRepository.createItem(input);
+        if (result.openItemId) {
+          this.openItemById(result.openItemId);
 
-        void operation.catch((error: unknown): void => console.error(error));
+          return;
+        }
+
+        if (result.input) {
+          void this.saveItem(result.input, result.itemId ?? item?.id).catch((error: unknown): void =>
+            console.error(error),
+          );
+        }
       });
+  }
+
+  private findActivityByName(name: string, ignoredActivityId?: string): Activity | undefined {
+    const normalizedName: string = normalizeName(name);
+
+    return this.activities().find(
+      (activity: Activity): boolean =>
+        activity.id !== ignoredActivityId && normalizeName(activity.name) === normalizedName,
+    );
+  }
+
+  private findItemByName(name: string, ignoredItemId?: string): Item | undefined {
+    const normalizedName: string = normalizeName(name);
+
+    return this.items().find(
+      (item: Item): boolean => item.id !== ignoredItemId && normalizeName(item.name) === normalizedName,
+    );
+  }
+
+  private openActivityById(activityId: string): void {
+    const activity: Activity | undefined = this.activities().find(
+      (currentActivity: Activity): boolean => currentActivity.id === activityId,
+    );
+
+    if (activity) {
+      this.openActivityDialog(activity);
+    }
+  }
+
+  private openItemById(itemId: string): void {
+    const item: Item | undefined = this.items().find((currentItem: Item): boolean => currentItem.id === itemId);
+
+    if (item) {
+      this.openItemDialog(item);
+    }
+  }
+
+  private saveActivity(input: CreateActivityInput, activityId?: string): Promise<Activity> {
+    return activityId
+      ? this.activityRepository.updateActivity(activityId, input)
+      : this.activityRepository.createActivity(input);
+  }
+
+  private saveItem(input: CreateItemInput, itemId?: string): Promise<Item> {
+    return itemId ? this.itemRepository.updateItem(itemId, input) : this.itemRepository.createItem(input);
   }
 
   private confirmDelete(data: ConfirmationDialogData): Observable<boolean | undefined> {
@@ -191,4 +260,8 @@ export class LibraryPage {
   private activityLabelKey(item: Item, activity: Activity): string {
     return `${item.id}:${activity.id}`;
   }
+}
+
+function normalizeName(name: string): string {
+  return name.trim().toLocaleLowerCase();
 }

@@ -5,9 +5,12 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import type { Activity } from '@packwise/shared';
+import { DuplicateNameSnackbarService } from '../../services/duplicate-name-snackbar.service';
 import type { CreateActivityInput } from '../../types/data.types';
-import type { ActivityDetailsDialogData } from './activity-details-dialog.types';
+import type { ActivityDetailsDialogData, ActivityDetailsDialogResult } from './activity-details-dialog.types';
 
 // constants
 const DEFAULT_ACTIVITY_ICON = 'hiking';
@@ -68,6 +71,7 @@ const ACTIVITY_HUES: readonly number[] = [0, 36, 72, 108, 144, 180, 216, 252, 28
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
   ],
   templateUrl: './activity-details-dialog.component.html',
@@ -77,8 +81,9 @@ export class ActivityDetailsDialogComponent {
   // injections
   private readonly data = inject<ActivityDetailsDialogData | null>(MAT_DIALOG_DATA, { optional: true });
   private readonly dialogRef = inject<
-    MatDialogRef<ActivityDetailsDialogComponent, CreateActivityInput | undefined>
+    MatDialogRef<ActivityDetailsDialogComponent, ActivityDetailsDialogResult | undefined>
   >(MatDialogRef);
+  private readonly duplicateNameSnackbar = inject(DuplicateNameSnackbarService);
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
   // data
@@ -129,8 +134,31 @@ export class ActivityDetailsDialogComponent {
       icon: optionalTrim(value.icon),
       color: hslColor(value.hue),
     };
+    const duplicateActivity: Activity | undefined = this.data?.findDuplicateActivity?.(
+      input.name,
+      this.data.activity?.id,
+    );
 
-    this.dialogRef.close(input);
+    if (duplicateActivity) {
+      this.duplicateNameSnackbar.open('activity', duplicateActivity.name).subscribe((action): void => {
+        if (action === 'overwrite') {
+          this.dialogRef.close({
+            activityId: duplicateActivity.id,
+            input,
+          });
+
+          return;
+        }
+
+        this.dialogRef.close({
+          openActivityId: duplicateActivity.id,
+        });
+      });
+
+      return;
+    }
+
+    this.dialogRef.close({ input });
   }
 }
 

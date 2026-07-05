@@ -6,7 +6,13 @@
 
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="cancel()">Cancel</button>
-  <button mat-flat-button type="button" class="confirmation-dialog__confirm" (click)="confirm()">
+  <button
+    mat-flat-button
+    type="button"
+    class="confirmation-dialog__confirm"
+    [class.confirmation-dialog__confirm--danger]="confirmTone === 'danger'"
+    (click)="confirm()"
+  >
     {{ confirmLabel }}
   </button>
 </mat-dialog-actions>

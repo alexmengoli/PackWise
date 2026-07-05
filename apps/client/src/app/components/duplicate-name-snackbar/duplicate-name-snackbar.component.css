@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.duplicate-name-snackbar__message {
+  min-width: 12rem;
+  max-width: 28rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.duplicate-name-snackbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}

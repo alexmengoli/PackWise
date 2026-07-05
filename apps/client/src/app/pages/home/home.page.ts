@@ -7,7 +7,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ITEM_CATEGORIES, type Activity, type Item } from '@packwise/shared';
 import { ActivityDetailsDialogComponent } from '../../components/activity-details-dialog/activity-details-dialog.component';
+import type {
+  ActivityDetailsDialogData,
+  ActivityDetailsDialogResult,
+} from '../../components/activity-details-dialog/activity-details-dialog.types';
 import { ItemDetailsDialogComponent } from '../../components/item-details-dialog/item-details-dialog.component';
+import type {
+  ItemDetailsDialogData,
+  ItemDetailsDialogResult,
+} from '../../components/item-details-dialog/item-details-dialog.types';
 import { ActivityRepositoryService } from '../../services/activity.repository.service';
 import { ItemRepositoryService } from '../../services/item.repository.service';
 import type { CreateActivityInput, CreateItemInput } from '../../types/data.types';
@@ -70,31 +78,38 @@ export class HomePage {
 
   protected createActivity(): void {
     this.dialog
-      .open<ActivityDetailsDialogComponent, undefined, CreateActivityInput | undefined>(ActivityDetailsDialogComponent, {
-        maxWidth: 'calc(100vw - 1rem)',
-        width: '38rem',
-      })
+      .open<ActivityDetailsDialogComponent, ActivityDetailsDialogData, ActivityDetailsDialogResult | undefined>(
+        ActivityDetailsDialogComponent,
+        {
+          data: {
+            findDuplicateActivity: (name: string, ignoredActivityId?: string): Activity | undefined =>
+              this.findActivityByName(name, ignoredActivityId),
+          },
+          maxWidth: 'calc(100vw - 1rem)',
+          width: '38rem',
+        },
+      )
       .afterClosed()
-      .subscribe((input: CreateActivityInput | undefined): void => {
-        if (!input) {
+      .subscribe((result: ActivityDetailsDialogResult | undefined): void => {
+        if (!result) {
           return;
         }
 
-        void this.activityRepository
-          .createActivity(input)
-          .then((activity: Activity): void => {
-            this.selectedActivityIdsSignal.update((selectedActivityIds: string[]): string[] => [
-              ...selectedActivityIds,
-              activity.id,
-            ]);
-          })
-          .catch((error: unknown): void => console.error(error));
+        if (result.openActivityId) {
+          this.openExistingActivityById(result.openActivityId);
+
+          return;
+        }
+
+        if (result.input) {
+          void this.saveActivity(result.input, result.activityId).catch((error: unknown): void => console.error(error));
+        }
       });
   }
 
   protected createItem(): void {
     this.dialog
-      .open<ItemDetailsDialogComponent, { activities: Activity[]; activityIds: string[] }, CreateItemInput | undefined>(
+      .open<ItemDetailsDialogComponent, ItemDetailsDialogData, ItemDetailsDialogResult | undefined>(
         ItemDetailsDialogComponent,
         {
           maxWidth: 'calc(100vw - 1rem)',
@@ -102,16 +117,26 @@ export class HomePage {
           data: {
             activities: this.activities(),
             activityIds: this.selectedActivityIds(),
+            findDuplicateItem: (name: string, ignoredItemId?: string): Item | undefined =>
+              this.findItemByName(name, ignoredItemId),
           },
         },
       )
       .afterClosed()
-      .subscribe((input: CreateItemInput | undefined): void => {
-        if (!input) {
+      .subscribe((result: ItemDetailsDialogResult | undefined): void => {
+        if (!result) {
           return;
         }
 
-        void this.itemRepository.createItem(input).catch((error: unknown): void => console.error(error));
+        if (result.openItemId) {
+          this.openExistingItemById(result.openItemId);
+
+          return;
+        }
+
+        if (result.input) {
+          void this.saveItem(result.input, result.itemId).catch((error: unknown): void => console.error(error));
+        }
       });
   }
 
@@ -141,6 +166,136 @@ export class HomePage {
 
   protected isSelected(activityId: string): boolean {
     return this.selectedActivityIds().includes(activityId);
+  }
+
+  private findActivityByName(name: string, ignoredActivityId?: string): Activity | undefined {
+    const normalizedName: string = normalizeName(name);
+
+    return this.activities().find(
+      (activity: Activity): boolean =>
+        activity.id !== ignoredActivityId && normalizeName(activity.name) === normalizedName,
+    );
+  }
+
+  private findItemByName(name: string, ignoredItemId?: string): Item | undefined {
+    const normalizedName: string = normalizeName(name);
+
+    return this.items().find(
+      (item: Item): boolean => item.id !== ignoredItemId && normalizeName(item.name) === normalizedName,
+    );
+  }
+
+  private openExistingActivityDialog(activity: Activity): void {
+    this.dialog
+      .open<ActivityDetailsDialogComponent, ActivityDetailsDialogData, ActivityDetailsDialogResult | undefined>(
+        ActivityDetailsDialogComponent,
+        {
+          maxWidth: 'calc(100vw - 1rem)',
+          width: '38rem',
+          data: {
+            activity,
+            findDuplicateActivity: (name: string, ignoredActivityId?: string): Activity | undefined =>
+              this.findActivityByName(name, ignoredActivityId),
+          },
+        },
+      )
+      .afterClosed()
+      .subscribe((result: ActivityDetailsDialogResult | undefined): void => {
+        if (!result) {
+          return;
+        }
+
+        if (result.openActivityId) {
+          this.openExistingActivityById(result.openActivityId);
+
+          return;
+        }
+
+        if (result.input) {
+          void this.saveActivity(result.input, result.activityId ?? activity.id).catch((error: unknown): void =>
+            console.error(error),
+          );
+        }
+      });
+  }
+
+  private openExistingItemDialog(item: Item): void {
+    this.dialog
+      .open<ItemDetailsDialogComponent, ItemDetailsDialogData, ItemDetailsDialogResult | undefined>(
+        ItemDetailsDialogComponent,
+        {
+          maxWidth: 'calc(100vw - 1rem)',
+          width: '38rem',
+          data: {
+            activities: this.activities(),
+            findDuplicateItem: (name: string, ignoredItemId?: string): Item | undefined =>
+              this.findItemByName(name, ignoredItemId),
+            item,
+          },
+        },
+      )
+      .afterClosed()
+      .subscribe((result: ItemDetailsDialogResult | undefined): void => {
+        if (!result) {
+          return;
+        }
+
+        if (result.openItemId) {
+          this.openExistingItemById(result.openItemId);
+
+          return;
+        }
+
+        if (result.input) {
+          void this.saveItem(result.input, result.itemId ?? item.id).catch((error: unknown): void =>
+            console.error(error),
+          );
+        }
+      });
+  }
+
+  private openExistingActivityById(activityId: string): void {
+    const activity: Activity | undefined = this.activities().find(
+      (currentActivity: Activity): boolean => currentActivity.id === activityId,
+    );
+
+    if (activity) {
+      this.openExistingActivityDialog(activity);
+    }
+  }
+
+  private openExistingItemById(itemId: string): void {
+    const item: Item | undefined = this.items().find((currentItem: Item): boolean => currentItem.id === itemId);
+
+    if (item) {
+      this.openExistingItemDialog(item);
+    }
+  }
+
+  private saveActivity(input: CreateActivityInput, activityId?: string): Promise<Activity> {
+    if (activityId) {
+      return this.activityRepository.updateActivity(activityId, input).then((activity: Activity): Activity => {
+        this.selectActivity(activity.id);
+
+        return activity;
+      });
+    }
+
+    return this.activityRepository.createActivity(input).then((activity: Activity): Activity => {
+      this.selectActivity(activity.id);
+
+      return activity;
+    });
+  }
+
+  private saveItem(input: CreateItemInput, itemId?: string): Promise<Item> {
+    return itemId ? this.itemRepository.updateItem(itemId, input) : this.itemRepository.createItem(input);
+  }
+
+  private selectActivity(activityId: string): void {
+    this.selectedActivityIdsSignal.update((selectedActivityIds: string[]): string[] =>
+      selectedActivityIds.includes(activityId) ? selectedActivityIds : [...selectedActivityIds, activityId],
+    );
   }
 }
 
@@ -182,4 +337,8 @@ function customCategories(items: Item[]): Array<Pick<PackingItemCategoryGroup, '
 
 function sortPackingItems(items: Item[]): Item[] {
   return [...items].sort((first: Item, second: Item): number => first.name.localeCompare(second.name));
+}
+
+function normalizeName(name: string): string {
+  return name.trim().toLocaleLowerCase();
 }

@@ -17,6 +17,7 @@ export class ConfirmationDialogComponent {
 
   // data
   protected readonly confirmLabel: string = this.data.confirmLabel ?? 'Delete';
+  protected readonly confirmTone: 'danger' | 'primary' = this.data.confirmTone ?? 'danger';
   protected readonly message: string = this.data.message;
   protected readonly title: string = this.data.title;
 

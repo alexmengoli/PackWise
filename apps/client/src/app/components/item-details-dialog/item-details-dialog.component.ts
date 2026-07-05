@@ -7,10 +7,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import type { Item } from '@packwise/shared';
+import { DuplicateNameSnackbarService } from '../../services/duplicate-name-snackbar.service';
 import type { CreateItemInput } from '../../types/data.types';
-import type { ItemDetailsDialogData } from './item-details-dialog.types';
+import type { ItemDetailsDialogData, ItemDetailsDialogResult } from './item-details-dialog.types';
 
 @Component({
   selector: 'app-item-details-dialog',
@@ -22,6 +24,7 @@ import type { ItemDetailsDialogData } from './item-details-dialog.types';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
   ],
   templateUrl: './item-details-dialog.component.html',
@@ -30,9 +33,10 @@ import type { ItemDetailsDialogData } from './item-details-dialog.types';
 export class ItemDetailsDialogComponent {
   // injections
   private readonly data = inject<ItemDetailsDialogData>(MAT_DIALOG_DATA);
-  private readonly dialogRef = inject<MatDialogRef<ItemDetailsDialogComponent, CreateItemInput | undefined>>(
+  private readonly dialogRef = inject<MatDialogRef<ItemDetailsDialogComponent, ItemDetailsDialogResult | undefined>>(
     MatDialogRef,
   );
+  private readonly duplicateNameSnackbar = inject(DuplicateNameSnackbarService);
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
   // data
@@ -72,8 +76,28 @@ export class ItemDetailsDialogComponent {
       size: optionalTrim(value.size),
       weight: optionalTrim(value.weight),
     };
+    const duplicateItem: Item | undefined = this.data.findDuplicateItem?.(input.name, this.data.item?.id);
 
-    this.dialogRef.close(input);
+    if (duplicateItem) {
+      this.duplicateNameSnackbar.open('item', duplicateItem.name).subscribe((action): void => {
+        if (action === 'overwrite') {
+          this.dialogRef.close({
+            input,
+            itemId: duplicateItem.id,
+          });
+
+          return;
+        }
+
+        this.dialogRef.close({
+          openItemId: duplicateItem.id,
+        });
+      });
+
+      return;
+    }
+
+    this.dialogRef.close({ input });
   }
 }
 

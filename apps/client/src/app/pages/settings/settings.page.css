@@ -14,7 +14,7 @@
   display: grid;
   gap: 1rem;
   margin: 0 auto;
-  max-width: 64rem;
+  max-width: 44rem;
 }
 
 .settings-page__hero {
@@ -96,23 +96,6 @@
   display: none;
 }
 
-.settings-message {
-  margin: 0;
-  border-radius: 0.75rem;
-  padding: 0.875rem 1rem;
-  line-height: 1.5;
-}
-
-.settings-message--success {
-  background: var(--mat-sys-primary-container);
-  color: var(--mat-sys-on-primary-container);
-}
-
-.settings-message--error {
-  background: var(--mat-sys-error-container);
-  color: var(--mat-sys-on-error-container);
-}
-
 @media (min-width: 640px) {
   .settings-page {
     padding-inline: 1.5rem;
@@ -129,6 +112,6 @@
   }
 
   .settings-page__layout {
-    max-width: 84rem;
+    max-width: 46rem;
   }
 }

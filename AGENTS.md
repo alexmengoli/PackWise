@@ -128,6 +128,7 @@ When changing persisted data:
 - Support keyboard navigation where relevant.
 - Ensure touch targets are comfortable on mobile.
 - Handle empty states and offline states clearly.
+- Use snackbars for short success or error feedback instead of inline status blocks when the message is transient.
 - Style every critical or destructive confirmation action in red.
 - Do not add visual complexity unless it improves the main packing workflow.
 
