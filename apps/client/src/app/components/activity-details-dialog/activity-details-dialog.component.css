@@ -40,7 +40,7 @@
 }
 
 .color-picker {
-  --selected-color: hsl(188 88% 31%);
+  --selected-color: hsl(180 88% 31%);
   display: flex;
   align-items: center;
   gap: 0.875rem;
@@ -73,7 +73,7 @@
 }
 
 .swatch-picker__option {
-  --swatch-color: hsl(188 88% 31%);
+  --swatch-color: hsl(180 88% 31%);
   width: 2.5rem;
   aspect-ratio: 1;
   border: 2px solid transparent;

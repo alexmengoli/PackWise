@@ -11,20 +11,54 @@ import type { ActivityDetailsDialogData } from './activity-details-dialog.types'
 
 // constants
 const DEFAULT_ACTIVITY_ICON = 'hiking';
-const DEFAULT_ACTIVITY_HUE = 188;
+const DEFAULT_ACTIVITY_HUE = 180;
 const ACTIVITY_COLOR_SATURATION = 88;
 const ACTIVITY_COLOR_LIGHTNESS = 31;
 const ACTIVITY_ICONS: readonly string[] = [
   'hiking',
   'beach_access',
+  'park',
+  'terrain',
+  'landscape',
+  'kayaking',
+  'sailing',
+  'pool',
+  'surfing',
+  'downhill_skiing',
+  'snowboarding',
+  'directions_run',
   'directions_bike',
   'fitness_center',
+  'sports_soccer',
+  'sports_basketball',
+  'sports_tennis',
+  'sports_baseball',
+  'sports_golf',
+  'sports_esports',
   'flight_takeoff',
+  'directions_car',
+  'train',
+  'hotel',
+  'restaurant',
+  'local_fire_department',
+  'photo_camera',
+  'music_note',
+  'theater_comedy',
+  'palette',
+  'celebration',
+  'family_restroom',
+  'child_care',
+  'medical_services',
+  'volunteer_activism',
   'work',
+  'business_center',
+  'laptop_mac',
+  'home_repair_service',
+  'construction',
   'school',
   'pets',
 ];
-const ACTIVITY_HUES: readonly number[] = [188, 181, 39, 145, 216, 274, 12, 327];
+const ACTIVITY_HUES: readonly number[] = [0, 36, 72, 108, 144, 180, 216, 252, 288, 324];
 
 @Component({
   selector: 'app-activity-details-dialog',
