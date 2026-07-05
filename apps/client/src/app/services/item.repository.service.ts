@@ -6,6 +6,7 @@ import type {
   PackwiseDataSnapshot,
   UpdateItemInput,
 } from '../types/data.types';
+import { createLocalId } from '../utils/local-id';
 import { IndexedDbPackwiseStorageAdapterService } from './indexed-db-packwise-storage.adapter.service';
 
 @Injectable({ providedIn: 'root' })
@@ -50,7 +51,7 @@ export class ItemRepositoryService {
     const now: string = new Date().toISOString();
     const item: Item = {
       ...input,
-      id: crypto.randomUUID(),
+      id: createLocalId(),
       activityIds: input.activityIds ? [...input.activityIds] : [],
       createdAt: now,
       updatedAt: now,

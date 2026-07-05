@@ -1,11 +1,11 @@
 import { Injectable, type Signal, type WritableSignal, inject, signal } from '@angular/core';
 import type { Activity, Item } from '@packwise/shared';
-
 import type {
   CreateActivityInput,
   PackwiseDataSnapshot,
   UpdateActivityInput,
 } from '../types/data.types';
+import { createLocalId } from '../utils/local-id';
 import { IndexedDbPackwiseStorageAdapterService } from './indexed-db-packwise-storage.adapter.service';
 import { ItemRepositoryService } from './item.repository.service';
 
@@ -52,7 +52,7 @@ export class ActivityRepositoryService {
     const now: string = new Date().toISOString();
     const activity: Activity = {
       ...input,
-      id: crypto.randomUUID(),
+      id: createLocalId(),
       createdAt: now,
       updatedAt: now,
     };
