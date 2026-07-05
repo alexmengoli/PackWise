@@ -95,19 +95,20 @@ export class LibraryPage {
     return category?.name ?? item.categoryId ?? 'Uncategorized';
   }
 
-  protected activityLabels(item: Item): string[] {
+  protected itemActivities(item: Item): Activity[] {
     if (item.mandatory) {
-      return ['All activities'];
+      return this.activities();
     }
 
-    const labels: string[] = item.activityIds
+    return item.activityIds
       .map((activityId: string): Activity | undefined =>
         this.activities().find((activity: Activity): boolean => activity.id === activityId),
       )
-      .filter((activity: Activity | undefined): activity is Activity => Boolean(activity))
-      .map((activity: Activity): string => activity.name);
+      .filter((activity: Activity | undefined): activity is Activity => Boolean(activity));
+  }
 
-    return labels.length > 0 ? labels : ['Unassigned'];
+  protected isUnassigned(item: Item): boolean {
+    return !item.mandatory && this.itemActivities(item).length === 0;
   }
 
   private openActivityDialog(activity?: Activity): void {

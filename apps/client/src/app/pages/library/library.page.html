@@ -114,7 +114,7 @@
                 <article class="item-row">
                   <div class="item-row__heading">
                     <h3 class="item-row__name">{{ item.name }}</h3>
-                    <span class="item-row__category">{{ categoryName(item) }}</span>
+                    <span class="item-row__category">#{{ categoryName(item) }}</span>
                     <button
                       mat-icon-button
                       type="button"
@@ -142,10 +142,22 @@
                   }
 
                   <div class="item-row__labels" aria-label="Assigned activities">
-                    @for (label of activityLabels(item); track label) {
-                      <span class="item-row__label" [class.item-row__label--mandatory]="item.mandatory">{{
-                        label
-                      }}</span>
+                    @if (isUnassigned(item)) {
+                      <span class="item-row__label item-row__label--unassigned">
+                        <mat-icon class="item-row__label-icon" aria-hidden="true">warning</mat-icon>
+                        Unassigned
+                      </span>
+                    } @else {
+                      @for (activity of itemActivities(item); track activity.id) {
+                        <span
+                          class="item-row__label"
+                          [style.--activity-color]="activity.color ?? 'var(--mat-sys-primary)'"
+                          [attr.aria-label]="activity.name"
+                          [title]="activity.name"
+                        >
+                          <mat-icon class="item-row__label-icon" aria-hidden="true">{{ activityIcon(activity) }}</mat-icon>
+                        </span>
+                      }
                     }
                   </div>
                 </article>
