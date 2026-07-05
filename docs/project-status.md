@@ -126,21 +126,27 @@ Mandatory items are also included, even when they are not assigned to the select
 The repository currently includes:
 
 - A pnpm workspace with `apps/client` and `packages/shared`.
-- A standalone Angular client using Angular Material.
+- A standalone Angular client using Angular Material and standalone route components.
 - A Pack screen at the root route.
-- A bottom navigation shell with Pack wired as the only active destination.
-- Starter activities and items shown when there is no local user data yet.
+- A Library screen at `/library`.
+- A bottom navigation shell with Pack and Library wired.
 - Item categories shown as groups in the packing checklist.
+- Activity and item creation from the Pack screen.
+- Activity creation, editing, and deletion from Library.
+- Item creation, editing, and deletion from Library.
+- Activity dialogs with name, description, icon, and hue-based color selection.
+- Item dialogs with name, description, category, mandatory flag, activity assignments, notes, size, and weight.
 - Local IndexedDB persistence through `IndexedDbPackwiseStorageAdapterService`.
 - Item and activity repository services with create, update, delete, refresh, loading, and error state.
-- Shared framework-independent `Activity` and `Item` TypeScript interfaces.
+- Activity deletion removes that activity reference from existing items.
+- Shared framework-independent `Activity`, `Item`, and item category TypeScript definitions.
 
 Not implemented yet:
 
-- Library screens for item and activity CRUD.
 - Settings screen.
 - Import/export UI.
 - Persisted packed/unpacked checklist state.
+- Search or filtering inside Library.
 - Tests.
 
 ## Core User Flow
@@ -164,6 +170,20 @@ The first useful version should focus on:
 - Generating a packing checklist
 - Marking generated list entries as packed
 - Persisting user data locally
+
+Implemented MVP pieces:
+
+- Item CRUD through Library and quick item creation from Pack.
+- Activity CRUD through Library and quick activity creation from Pack.
+- Activity assignment for items.
+- Live checklist generation from selected activities.
+- Local IndexedDB persistence for activities and items.
+
+Remaining MVP pieces:
+
+- Persist packed/unpacked state if that behavior should survive reloads.
+- Add import/export UI.
+- Add Settings as the place for local data operations.
 
 ## Future Ideas
 

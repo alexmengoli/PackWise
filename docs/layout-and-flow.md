@@ -13,8 +13,9 @@ Planned MVP screens:
 Current implementation:
 
 - Pack is implemented at the root route.
-- The bottom navigation shell exists, but only the Pack destination is wired.
-- Library and Settings are still planned.
+- Library is implemented at `/library`.
+- The bottom navigation shell currently exposes Pack and Library.
+- Settings is still planned.
 
 ## Navigation Model
 
@@ -23,7 +24,7 @@ Navigation should feel modern, quiet, and mobile-first. The app should use a bot
 Recommended approach:
 
 - Use Pack as the default route and main workspace.
-- Use a bottom navigation bar with three destinations: Pack, Library, Settings.
+- Use a bottom navigation bar with Pack, Library, and eventually Settings.
 - Keep the top area light and content-focused. It can show the PackWise name or the current section title, but it should not carry the main navigation.
 - Put Items and Activities inside Library, because both belong to catalog management.
 - Use contextual entry points only when they help the current task, such as the final `+` activity card or an empty-list action.
@@ -75,13 +76,15 @@ The current Pack screen is implemented as the home page. It shows:
 - A heading and short explanation.
 - A two-row horizontally scrollable activity grid.
 - Multi-select activity tiles with icon, color, and item count.
+- A final "New activity" tile that opens the activity dialog.
 - A live "To bring" checklist.
 - Keyboard-toggleable packing rows.
+- Item creation from the checklist heading.
 - A clear checked-items action.
 - Loading and empty states.
 
-When there is no saved local data, the page uses starter camping, beach, MTB, and gym data as a
-non-persisted first-run preview.
+When there is no saved local data, the page starts from an empty local snapshot and shows empty
+states until the user creates activities and items.
 
 ### Layout
 
@@ -115,7 +118,7 @@ To bring
 - Selected cards should be visually clear and accessible.
 - Activity colors should follow the Coastal Gear HSL line: keep saturation and lightness fixed at `88%` and `31%`, and let users choose only the hue. Store activity colors as `hsl(H 88% 31%)` so custom colors stay visually related to the primary `#005f73`, secondary `#0a9396`, and tertiary `#ee9b00` palette.
 - The current implementation uses a two-row horizontal activity grid rather than a single chip row.
-- The `+` activity action is planned but not implemented yet.
+- The final create activity tile is implemented.
 
 ### Packing List
 
@@ -147,22 +150,36 @@ The same model should work on desktop and tablet. The activity row can remain ho
 
 The Items window is the full CRUD area for packing items and lives inside Library.
 
-- Access it from the Library destination in the bottom navigation.
-- Show a searchable list of items.
-- Use a floating action button or toolbar action for adding a new item.
-- Open create/edit in a `MatDialog` on larger screens and a `MatBottomSheet` on mobile if that feels better for thumb reach.
-- Let users assign items to activities using Material chips or selection controls.
-- Keep delete inside the edit surface with a confirmation step.
+Current status:
+
+- Accessed from the Library destination in the bottom navigation.
+- Shows a local list of saved items with category labels and activity labels.
+- Supports create/edit through a `MatDialog`.
+- Supports assigning items to activities through a multi-select.
+- Supports a mandatory "Use for every activity" flag.
+- Supports delete from each item row with a confirmation dialog.
+
+Still planned:
+
+- Search or filtering.
+- A more compact Library switching model if the page becomes crowded.
 
 ## Activities Window
 
 The Activities window is the full CRUD area for activities and lives inside Library.
 
-- Access it from the Library destination in the bottom navigation.
-- Also allow quick creation from the final `+` card in the home activity row.
-- Show activities as manageable cards or list rows.
-- Use create/edit surfaces for name, optional icon, optional color, and notes.
-- Keep destructive delete behind confirmation, especially if items are already linked to the activity.
+Current status:
+
+- Accessed from the Library destination in the bottom navigation.
+- Also supports quick creation from the final activity tile on Pack.
+- Shows activities as manageable rows with icon, color, description, and item count.
+- Supports create/edit through a `MatDialog` with name, description, icon, and color controls.
+- Supports delete with confirmation.
+- Deleting an activity keeps items in the library and removes that activity assignment from affected items.
+
+Still planned:
+
+- Additional management affordances if activity lists become long.
 
 ## Settings Window
 
@@ -171,6 +188,10 @@ The Settings window is for local data operations and low-frequency preferences.
 - Access it from the Settings destination in the bottom navigation.
 - Keep import/export here rather than on the home screen.
 - Keep any future optional sync or account entry points isolated here so the core app remains usable offline.
+
+Current status:
+
+- Not implemented yet.
 
 ## Future Sections
 

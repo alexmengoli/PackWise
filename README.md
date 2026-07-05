@@ -16,8 +16,15 @@ network access.
 ## Documentation
 
 - [Project status](docs/project-status.md): product overview, current scope, MVP notes, and future ideas.
-- [Layout and flow](docs/layout-and-flow.md): navigation, Pack screen, and planned Library and Settings flows.
-- [Client TODO](apps/client/TODO.md): short implementation backlog for the Angular client.
+- [Layout and flow](docs/layout-and-flow.md): navigation, Pack screen, Library, and planned Settings flow.
+
+## Current Status
+
+- Pack is available at `/` and lets users select one or more activities to generate a live checklist.
+- Library is available at `/library` and supports local create, edit, and delete flows for activities and items.
+- Local data is stored on-device in IndexedDB as a single snapshot.
+- Packed/unpacked checklist state is currently session-only.
+- Settings and import/export UI are not implemented yet.
 
 ## Commands
 
