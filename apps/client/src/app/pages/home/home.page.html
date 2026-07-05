@@ -74,41 +74,49 @@
           <p class="home-page__empty">No items match the selected activities yet.</p>
         } @else {
           <div class="home-page__list">
-            @for (item of packingItems(); track item.id) {
-              <mat-card
-                appearance="filled"
-                class="packing-item"
-                role="checkbox"
-                tabindex="0"
-                [attr.aria-checked]="isPacked(item.id)"
-                [class.packing-item--packed]="isPacked(item.id)"
-                (click)="togglePacked(item.id)"
-                (keydown.enter)="togglePacked(item.id)"
-                (keydown.space)="$event.preventDefault(); togglePacked(item.id)"
-              >
-                <mat-card-content>
-                  <mat-checkbox
-                    class="packing-item__checkbox"
-                    aria-hidden="true"
-                    tabindex="-1"
-                    [checked]="isPacked(item.id)"
-                  >
-                    <span class="packing-item__label">
-                      <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{
-                        item.name
-                      }}</span>
+            @for (group of packingItemGroups(); track group.id) {
+              <section class="packing-category" [attr.aria-labelledby]="'packing-category-' + group.id">
+                <h3 class="packing-category__title" [id]="'packing-category-' + group.id">{{ group.name }}</h3>
 
-                      @if (item.mandatory) {
-                        <span class="packing-item__chip">All activities</span>
-                      }
-                    </span>
-                  </mat-checkbox>
+                <div class="packing-category__items">
+                  @for (item of group.items; track item.id) {
+                    <mat-card
+                      appearance="filled"
+                      class="packing-item"
+                      role="checkbox"
+                      tabindex="0"
+                      [attr.aria-checked]="isPacked(item.id)"
+                      [class.packing-item--packed]="isPacked(item.id)"
+                      (click)="togglePacked(item.id)"
+                      (keydown.enter)="togglePacked(item.id)"
+                      (keydown.space)="$event.preventDefault(); togglePacked(item.id)"
+                    >
+                      <mat-card-content>
+                        <mat-checkbox
+                          class="packing-item__checkbox"
+                          aria-hidden="true"
+                          tabindex="-1"
+                          [checked]="isPacked(item.id)"
+                        >
+                          <span class="packing-item__label">
+                            <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{
+                              item.name
+                            }}</span>
 
-                  @if (item.description) {
-                    <p class="packing-item__description">{{ item.description }}</p>
+                            @if (item.mandatory) {
+                              <span class="packing-item__chip">All activities</span>
+                            }
+                          </span>
+                        </mat-checkbox>
+
+                        @if (item.description) {
+                          <p class="packing-item__description">{{ item.description }}</p>
+                        }
+                      </mat-card-content>
+                    </mat-card>
                   }
-                </mat-card-content>
-              </mat-card>
+                </div>
+              </section>
             }
           </div>
         }

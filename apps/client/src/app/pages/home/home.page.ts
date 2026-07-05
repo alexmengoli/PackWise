@@ -3,11 +3,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import type { Activity, Item } from '@packwise/shared';
-
+import { ITEM_CATEGORIES, type Activity, type Item } from '@packwise/shared';
 import { ActivityRepositoryService } from '../../services/activity.repository.service';
 import { ItemRepositoryService } from '../../services/item.repository.service';
+import type { PackingItemCategoryGroup, PackingItemCategoryId } from '../../types/packing-item-category.types';
 import { STARTER_ACTIVITIES, STARTER_ITEMS } from './home.data';
+
+// constants
+const UNCATEGORIZED_CATEGORY: Pick<PackingItemCategoryGroup, 'id' | 'name'> = {
+  id: 'uncategorized',
+  name: 'Uncategorized',
+};
 
 @Component({
   selector: 'app-home-page',
@@ -50,20 +56,19 @@ export class HomePage {
     return this.items().filter(
       (item: Item): boolean =>
         item.mandatory ||
-        item.activityIds.some((activityId: string): boolean =>
-          selectedActivityIds.includes(activityId),
-        ),
+        item.activityIds.some((activityId: string): boolean => selectedActivityIds.includes(activityId)),
     );
   });
+  protected readonly packingItemGroups = computed((): PackingItemCategoryGroup[] =>
+    groupPackingItemsByCategory(this.packingItems()),
+  );
 
   protected activityIcon(activity: Activity): string {
     return activity.icon ?? 'hiking';
   }
 
   protected itemCount(activityId: string): number {
-    return this.items().filter(
-      (item: Item): boolean => item.mandatory || item.activityIds.includes(activityId),
-    ).length;
+    return this.items().filter((item: Item): boolean => item.mandatory || item.activityIds.includes(activityId)).length;
   }
 
   protected toggleActivity(activityId: string): void {
@@ -93,4 +98,26 @@ export class HomePage {
   protected isSelected(activityId: string): boolean {
     return this.selectedActivityIds().includes(activityId);
   }
+}
+
+function groupPackingItemsByCategory(items: Item[]): PackingItemCategoryGroup[] {
+  const categories: ReadonlyArray<Pick<PackingItemCategoryGroup, 'id' | 'name'>> = [
+    ...ITEM_CATEGORIES,
+    UNCATEGORIZED_CATEGORY,
+  ];
+
+  return categories
+    .map((category: Pick<PackingItemCategoryGroup, 'id' | 'name'>): PackingItemCategoryGroup => ({
+      ...category,
+      items: sortPackingItems(items.filter((item: Item): boolean => itemCategoryId(item) === category.id)),
+    }))
+    .filter((group: PackingItemCategoryGroup): boolean => group.items.length > 0);
+}
+
+function itemCategoryId(item: Item): PackingItemCategoryId {
+  return item.categoryId ?? UNCATEGORIZED_CATEGORY.id;
+}
+
+function sortPackingItems(items: Item[]): Item[] {
+  return [...items].sort((first: Item, second: Item): number => first.name.localeCompare(second.name));
 }

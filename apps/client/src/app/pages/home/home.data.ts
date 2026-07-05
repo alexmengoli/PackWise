@@ -42,6 +42,7 @@ export const STARTER_ITEMS: Item[] = [
     id: 'starter-tent',
     name: 'Tent',
     description: 'Check poles and stakes before leaving.',
+    categoryId: 'tools',
     mandatory: false,
     activityIds: ['starter-camping'],
     createdAt: CREATED_AT,
@@ -50,6 +51,7 @@ export const STARTER_ITEMS: Item[] = [
   {
     id: 'starter-water-bottle',
     name: 'Water bottle',
+    categoryId: 'tools',
     mandatory: true,
     activityIds: [],
     createdAt: CREATED_AT,
@@ -59,6 +61,7 @@ export const STARTER_ITEMS: Item[] = [
     id: 'starter-sunscreen',
     name: 'Sunscreen',
     description: 'SPF 50 if you will stay outside for a while.',
+    categoryId: 'toiletries',
     mandatory: false,
     activityIds: ['starter-camping', 'starter-beach', 'starter-mtb'],
     createdAt: CREATED_AT,
@@ -67,6 +70,7 @@ export const STARTER_ITEMS: Item[] = [
   {
     id: 'starter-repair-kit',
     name: 'Repair kit',
+    categoryId: 'tools',
     mandatory: false,
     activityIds: ['starter-mtb'],
     createdAt: CREATED_AT,
@@ -75,6 +79,7 @@ export const STARTER_ITEMS: Item[] = [
   {
     id: 'starter-towel',
     name: 'Towel',
+    categoryId: 'clothes',
     mandatory: false,
     activityIds: ['starter-beach', 'starter-gym'],
     createdAt: CREATED_AT,

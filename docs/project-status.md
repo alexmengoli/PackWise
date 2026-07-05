@@ -32,6 +32,7 @@ Example:
   "id": "item-1",
   "name": "Sunscreen",
   "description": "SPF 50 protection",
+  "categoryId": "toiletries",
   "mandatory": false,
   "activityIds": ["activity-beach"],
   "notes": "Check the expiration date"
@@ -73,6 +74,7 @@ Represents a physical item that can be included in one or more packing lists.
 | `id`          | UUID / string | Yes      | Unique item identifier.                                 |
 | `name`        | string        | Yes      | Item name.                                              |
 | `description` | string        | No       | Free-form item description.                             |
+| `categoryId`  | string        | No       | Optional item category, such as Clothes or Toiletries.  |
 | `mandatory`   | boolean       | Yes      | Whether the item appears for every selected activity.   |
 | `activityIds` | string[]      | Yes      | Activities this item belongs to.                        |
 | `weight`      | string        | No       | Item weight or weight note.                             |
@@ -128,6 +130,7 @@ The repository currently includes:
 - A Pack screen at the root route.
 - A bottom navigation shell with Pack wired as the only active destination.
 - Starter activities and items shown when there is no local user data yet.
+- Item categories shown as groups in the packing checklist.
 - Local IndexedDB persistence through `IndexedDbPackwiseStorageAdapterService`.
 - Item and activity repository services with create, update, delete, refresh, loading, and error state.
 - Shared framework-independent `Activity` and `Item` TypeScript interfaces.
@@ -171,7 +174,6 @@ These ideas are intentionally outside the first MVP unless explicitly prioritize
 - Import/export
 - PDF export
 - Weight totals
-- Item categories
 - Optional account support
 - Optional backup and sync
 
