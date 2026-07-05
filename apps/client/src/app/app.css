@@ -1,8 +1,16 @@
 :host {
   --app-bottom-nav-height: 5rem;
+  --app-nav-rail-width: 6rem;
 
   display: block;
   box-sizing: border-box;
   padding-bottom: calc(var(--app-bottom-nav-height) + env(safe-area-inset-bottom));
   min-height: 100dvh;
+}
+
+@media (min-width: 960px) {
+  :host {
+    padding-bottom: 0;
+    padding-left: var(--app-nav-rail-width);
+  }
 }

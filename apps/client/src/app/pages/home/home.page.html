@@ -5,155 +5,157 @@
       <p class="home-page__subtitle">Pick one or more activities and your packing list updates instantly.</p>
     </header>
 
-    <mat-card appearance="outlined" class="home-section">
-      <mat-card-content>
-        <div class="home-section__heading">
-          <h2 class="home-section__title">Activities</h2>
-          <p class="home-section__subtitle">Select every context that applies to this trip.</p>
-        </div>
-
-        @if (loading()) {
-          <div class="home-page__loading">
-            <mat-progress-bar mode="indeterminate" />
-            <p>Loading your local data...</p>
+    <div class="home-page__columns">
+      <mat-card appearance="outlined" class="home-section home-section--activities">
+        <mat-card-content>
+          <div class="home-section__heading">
+            <h2 class="home-section__title">Activities</h2>
+            <p class="home-section__subtitle">Select every context that applies to this trip.</p>
           </div>
-        } @else {
-          <div class="activity-grid-shell">
-            <div class="activity-grid" aria-label="Activities" role="group">
-              @for (activity of activities(); track activity.id) {
+
+          @if (loading()) {
+            <div class="home-page__loading">
+              <mat-progress-bar mode="indeterminate" />
+              <p>Loading your local data...</p>
+            </div>
+          } @else {
+            <div class="activity-grid-shell">
+              <div class="activity-grid" aria-label="Activities" role="group">
+                @for (activity of activities(); track activity.id) {
+                  <button
+                    type="button"
+                    class="activity-tile"
+                    [class.activity-tile--selected]="isSelected(activity.id)"
+                    [attr.aria-pressed]="isSelected(activity.id)"
+                    [style.--activity-color]="activity.color ?? 'var(--mat-sys-surface-container-high)'"
+                    (click)="toggleActivity(activity.id)"
+                  >
+                    <span class="activity-tile__content">
+                      <span class="activity-tile__icon-wrap">
+                        <mat-icon class="activity-tile__icon" aria-hidden="true">{{ activityIcon(activity) }}</mat-icon>
+                      </span>
+                      <span class="activity-tile__text">
+                        <span class="activity-tile__name">{{ activity.name }}</span>
+                        <span class="activity-tile__meta">{{ itemCount(activity.id) }} items</span>
+                      </span>
+                    </span>
+                  </button>
+                }
+
                 <button
                   type="button"
-                  class="activity-tile"
-                  [class.activity-tile--selected]="isSelected(activity.id)"
-                  [attr.aria-pressed]="isSelected(activity.id)"
-                  [style.--activity-color]="activity.color ?? 'var(--mat-sys-surface-container-high)'"
-                  (click)="toggleActivity(activity.id)"
+                  class="activity-tile activity-tile--create"
+                  aria-label="Create activity"
+                  (click)="createActivity()"
                 >
                   <span class="activity-tile__content">
                     <span class="activity-tile__icon-wrap">
-                      <mat-icon class="activity-tile__icon" aria-hidden="true">{{ activityIcon(activity) }}</mat-icon>
+                      <mat-icon class="activity-tile__icon" aria-hidden="true">add</mat-icon>
                     </span>
                     <span class="activity-tile__text">
-                      <span class="activity-tile__name">{{ activity.name }}</span>
-                      <span class="activity-tile__meta">{{ itemCount(activity.id) }} items</span>
+                      <span class="activity-tile__name">New activity</span>
+                      <span class="activity-tile__meta">Add details</span>
                     </span>
                   </span>
                 </button>
-              }
-
-              <button
-                type="button"
-                class="activity-tile activity-tile--create"
-                aria-label="Create activity"
-                (click)="createActivity()"
-              >
-                <span class="activity-tile__content">
-                  <span class="activity-tile__icon-wrap">
-                    <mat-icon class="activity-tile__icon" aria-hidden="true">add</mat-icon>
-                  </span>
-                  <span class="activity-tile__text">
-                    <span class="activity-tile__name">New activity</span>
-                    <span class="activity-tile__meta">Add details</span>
-                  </span>
-                </span>
-              </button>
+              </div>
             </div>
-          </div>
-        }
-      </mat-card-content>
-    </mat-card>
+          }
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card appearance="outlined" class="home-section">
-      <mat-card-content>
-        <div class="home-section__heading">
-          <h2 class="home-section__title">To bring</h2>
-          <p class="home-section__subtitle">Use the checklist as you pack.</p>
-          @if (!loading()) {
-            <div class="home-section__actions">
-              <button
-                mat-icon-button
-                type="button"
-                aria-label="Create item"
-                title="Create item"
-                (click)="createItem()"
-              >
-                <mat-icon aria-hidden="true">add</mat-icon>
-              </button>
-
-              @if (packingItems().length > 0) {
+      <mat-card appearance="outlined" class="home-section home-section--packing">
+        <mat-card-content>
+          <div class="home-section__heading">
+            <h2 class="home-section__title">To bring</h2>
+            <p class="home-section__subtitle">Use the checklist as you pack.</p>
+            @if (!loading()) {
+              <div class="home-section__actions">
                 <button
+                  mat-icon-button
                   type="button"
-                  class="home-section__reset"
-                  aria-label="Clear checked items"
-                  title="Clear checked items"
-                  [disabled]="!hasPackedItems()"
-                  (click)="clearPackedItems()"
+                  aria-label="Create item"
+                  title="Create item"
+                  (click)="createItem()"
                 >
-                  <mat-icon aria-hidden="true">restart_alt</mat-icon>
+                  <mat-icon aria-hidden="true">add</mat-icon>
                 </button>
+
+                @if (packingItems().length > 0) {
+                  <button
+                    type="button"
+                    class="home-section__reset"
+                    aria-label="Clear checked items"
+                    title="Clear checked items"
+                    [disabled]="!hasPackedItems()"
+                    (click)="clearPackedItems()"
+                  >
+                    <mat-icon aria-hidden="true">restart_alt</mat-icon>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          @if (loading()) {
+            <div class="home-page__loading">
+              <mat-progress-bar mode="indeterminate" />
+              <p>Preparing your packing view...</p>
+            </div>
+          } @else if (selectedActivityIds().length === 0) {
+            <p class="home-page__empty">Select one or more activities to see what to bring.</p>
+          } @else if (packingItems().length === 0) {
+            <p class="home-page__empty">No items match the selected activities yet.</p>
+          } @else {
+            <div class="home-page__list">
+              @for (group of packingItemGroups(); track group.id) {
+                <section class="packing-category" [attr.aria-labelledby]="'packing-category-' + group.id">
+                  <h3 class="packing-category__title" [id]="'packing-category-' + group.id">{{ group.name }}</h3>
+
+                  <div class="packing-category__items">
+                    @for (item of group.items; track item.id) {
+                      <mat-card
+                        appearance="filled"
+                        class="packing-item"
+                        role="checkbox"
+                        tabindex="0"
+                        [attr.aria-checked]="isPacked(item.id)"
+                        [class.packing-item--packed]="isPacked(item.id)"
+                        (click)="togglePacked(item.id)"
+                        (keydown.enter)="togglePacked(item.id)"
+                        (keydown.space)="$event.preventDefault(); togglePacked(item.id)"
+                      >
+                        <mat-card-content>
+                          <mat-checkbox
+                            class="packing-item__checkbox"
+                            aria-hidden="true"
+                            tabindex="-1"
+                            [checked]="isPacked(item.id)"
+                          >
+                            <span class="packing-item__label">
+                              <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{
+                                item.name
+                              }}</span>
+
+                              @if (item.mandatory) {
+                                <span class="packing-item__chip">All activities</span>
+                              }
+                            </span>
+                          </mat-checkbox>
+
+                          @if (item.description) {
+                            <p class="packing-item__description">{{ item.description }}</p>
+                          }
+                        </mat-card-content>
+                      </mat-card>
+                    }
+                  </div>
+                </section>
               }
             </div>
           }
-        </div>
-
-        @if (loading()) {
-          <div class="home-page__loading">
-            <mat-progress-bar mode="indeterminate" />
-            <p>Preparing your packing view...</p>
-          </div>
-        } @else if (selectedActivityIds().length === 0) {
-          <p class="home-page__empty">Select one or more activities to see what to bring.</p>
-        } @else if (packingItems().length === 0) {
-          <p class="home-page__empty">No items match the selected activities yet.</p>
-        } @else {
-          <div class="home-page__list">
-            @for (group of packingItemGroups(); track group.id) {
-              <section class="packing-category" [attr.aria-labelledby]="'packing-category-' + group.id">
-                <h3 class="packing-category__title" [id]="'packing-category-' + group.id">{{ group.name }}</h3>
-
-                <div class="packing-category__items">
-                  @for (item of group.items; track item.id) {
-                    <mat-card
-                      appearance="filled"
-                      class="packing-item"
-                      role="checkbox"
-                      tabindex="0"
-                      [attr.aria-checked]="isPacked(item.id)"
-                      [class.packing-item--packed]="isPacked(item.id)"
-                      (click)="togglePacked(item.id)"
-                      (keydown.enter)="togglePacked(item.id)"
-                      (keydown.space)="$event.preventDefault(); togglePacked(item.id)"
-                    >
-                      <mat-card-content>
-                        <mat-checkbox
-                          class="packing-item__checkbox"
-                          aria-hidden="true"
-                          tabindex="-1"
-                          [checked]="isPacked(item.id)"
-                        >
-                          <span class="packing-item__label">
-                            <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{
-                              item.name
-                            }}</span>
-
-                            @if (item.mandatory) {
-                              <span class="packing-item__chip">All activities</span>
-                            }
-                          </span>
-                        </mat-checkbox>
-
-                        @if (item.description) {
-                          <p class="packing-item__description">{{ item.description }}</p>
-                        }
-                      </mat-card-content>
-                    </mat-card>
-                  }
-                </div>
-              </section>
-            }
-          </div>
-        }
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </main>

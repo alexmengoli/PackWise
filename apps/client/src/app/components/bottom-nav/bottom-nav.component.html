@@ -28,3 +28,30 @@
 </nav>
 
 <mat-tab-nav-panel #bottomNavPanel />
+
+<nav class="desktop-nav" aria-label="Primary">
+  <a
+    class="desktop-nav__item"
+    routerLink="/"
+    routerLinkActive="desktop-nav__item--active"
+    #desktopPackLink="routerLinkActive"
+    ariaCurrentWhenActive="page"
+    [routerLinkActiveOptions]="{ exact: true }"
+    [attr.aria-label]="desktopPackLink.isActive ? 'Pack, current page' : 'Pack'"
+  >
+    <mat-icon class="desktop-nav__icon" aria-hidden="true">checklist</mat-icon>
+    <span class="desktop-nav__label">Pack</span>
+  </a>
+
+  <a
+    class="desktop-nav__item"
+    routerLink="/library"
+    routerLinkActive="desktop-nav__item--active"
+    #desktopLibraryLink="routerLinkActive"
+    ariaCurrentWhenActive="page"
+    [attr.aria-label]="desktopLibraryLink.isActive ? 'Library, current page' : 'Library'"
+  >
+    <mat-icon class="desktop-nav__icon" aria-hidden="true">inventory_2</mat-icon>
+    <span class="desktop-nav__label">Library</span>
+  </a>
+</nav>

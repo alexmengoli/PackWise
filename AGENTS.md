@@ -122,6 +122,7 @@ When changing persisted data:
 ## UI expectations
 
 - Design mobile-first.
+- Ensure every UI remains comfortable and functional on desktop-wide screens, with responsive layouts that make good use of available space.
 - Keep the interface fast, simple, and low-friction.
 - Use accessible semantic elements where possible.
 - Support keyboard navigation where relevant.
