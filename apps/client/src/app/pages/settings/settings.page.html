@@ -1,1 +1,61 @@
+<main class="settings-page">
+  <div class="settings-page__layout">
+    <header class="settings-page__hero">
+      <h1 class="settings-page__title">Settings</h1>
+      <p class="settings-page__subtitle">Manage the data saved locally on this device.</p>
+    </header>
 
+    <mat-card appearance="outlined" class="settings-section">
+      <mat-card-content>
+        <div class="settings-section__heading">
+          <h2 class="settings-section__title">Data</h2>
+          <p class="settings-section__subtitle">Export a backup or restore a previous Packwise JSON file.</p>
+        </div>
+
+        @if (busy()) {
+          <mat-progress-bar mode="indeterminate" />
+        }
+
+        <div class="data-actions">
+          <button
+            mat-flat-button
+            type="button"
+            class="data-actions__button"
+            [disabled]="busy()"
+            (click)="exportData()"
+          >
+            <mat-icon aria-hidden="true">download</mat-icon>
+            Export JSON
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="data-actions__button"
+            [disabled]="busy()"
+            (click)="importInput.click()"
+          >
+            <mat-icon aria-hidden="true">upload</mat-icon>
+            Import JSON
+          </button>
+
+          <input
+            #importInput
+            type="file"
+            class="data-actions__file"
+            accept="application/json,.json"
+            (change)="importData($event)"
+          />
+        </div>
+
+        @if (statusMessage()) {
+          <p class="settings-message settings-message--success">{{ statusMessage() }}</p>
+        }
+
+        @if (errorMessage()) {
+          <p class="settings-message settings-message--error">{{ errorMessage() }}</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>
