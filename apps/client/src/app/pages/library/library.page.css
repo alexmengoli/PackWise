@@ -199,7 +199,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto auto;
   gap: 0.5rem;
-  align-items: start;
+  align-items: center;
 }
 
 .item-row__name {
@@ -218,6 +218,7 @@
 
 .item-row__category {
   color: var(--mat-sys-on-surface-variant);
+  white-space: nowrap;
 }
 
 .item-row__description {

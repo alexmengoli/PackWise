@@ -115,7 +115,9 @@
                   <article class="item-row">
                     <div class="item-row__heading">
                       <h3 class="item-row__name">{{ item.name }}</h3>
-                      <span class="item-row__category">#{{ categoryName(item) }}</span>
+                      @if (categoryName(item); as category) {
+                        <span class="item-row__category">#{{ category }}</span>
+                      }
                       <button
                         mat-icon-button
                         type="button"

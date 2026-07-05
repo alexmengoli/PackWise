@@ -88,12 +88,12 @@ export class LibraryPage {
     ).length;
   }
 
-  protected categoryName(item: Item): string {
+  protected categoryName(item: Item): string | undefined {
     const category: ItemCategoryDefinition | undefined = ITEM_CATEGORIES.find(
       (currentCategory: ItemCategoryDefinition): boolean => currentCategory.id === item.categoryId,
     );
 
-    return category?.name ?? item.categoryId ?? 'Uncategorized';
+    return category?.name ?? item.categoryId;
   }
 
   protected itemActivities(item: Item): Activity[] {
