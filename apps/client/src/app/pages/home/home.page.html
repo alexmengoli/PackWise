@@ -65,12 +65,23 @@
         } @else {
           <div class="home-page__list">
             @for (item of packingItems(); track item.id) {
-              <mat-card appearance="filled" class="packing-item" [class.packing-item--packed]="isPacked(item.id)">
+              <mat-card
+                appearance="filled"
+                class="packing-item"
+                role="checkbox"
+                tabindex="0"
+                [attr.aria-checked]="isPacked(item.id)"
+                [class.packing-item--packed]="isPacked(item.id)"
+                (click)="togglePacked(item.id)"
+                (keydown.enter)="togglePacked(item.id)"
+                (keydown.space)="$event.preventDefault(); togglePacked(item.id)"
+              >
                 <mat-card-content>
                   <mat-checkbox
                     class="packing-item__checkbox"
+                    aria-hidden="true"
+                    tabindex="-1"
                     [checked]="isPacked(item.id)"
-                    (change)="togglePacked(item.id)"
                   >
                     <span class="packing-item__name" [class.packing-item__name--packed]="isPacked(item.id)">{{
                       item.name
