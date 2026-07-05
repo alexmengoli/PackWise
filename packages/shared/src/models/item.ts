@@ -1,4 +1,4 @@
-export type ItemCategoryId = 'clothes' | 'electronics' | 'toiletries' | 'documents' | 'tools';
+export type ItemCategoryId = string;
 
 export interface ItemCategoryDefinition {
   id: ItemCategoryId;

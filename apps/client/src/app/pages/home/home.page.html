@@ -40,6 +40,23 @@
                   </span>
                 </button>
               }
+
+              <button
+                type="button"
+                class="activity-tile activity-tile--create"
+                aria-label="Create activity"
+                (click)="createActivity()"
+              >
+                <span class="activity-tile__content">
+                  <span class="activity-tile__icon-wrap">
+                    <mat-icon class="activity-tile__icon" aria-hidden="true">add</mat-icon>
+                  </span>
+                  <span class="activity-tile__text">
+                    <span class="activity-tile__name">New activity</span>
+                    <span class="activity-tile__meta">Add details</span>
+                  </span>
+                </span>
+              </button>
             </div>
           </div>
         }
@@ -51,17 +68,31 @@
         <div class="home-section__heading">
           <h2 class="home-section__title">To bring</h2>
           <p class="home-section__subtitle">Use the checklist as you pack.</p>
-          @if (!loading() && packingItems().length > 0) {
-            <button
-              type="button"
-              class="home-section__reset"
-              aria-label="Clear checked items"
-              title="Clear checked items"
-              [disabled]="!hasPackedItems()"
-              (click)="clearPackedItems()"
-            >
-              <mat-icon aria-hidden="true">restart_alt</mat-icon>
-            </button>
+          @if (!loading()) {
+            <div class="home-section__actions">
+              <button
+                mat-icon-button
+                type="button"
+                aria-label="Create item"
+                title="Create item"
+                (click)="createItem()"
+              >
+                <mat-icon aria-hidden="true">add</mat-icon>
+              </button>
+
+              @if (packingItems().length > 0) {
+                <button
+                  type="button"
+                  class="home-section__reset"
+                  aria-label="Clear checked items"
+                  title="Clear checked items"
+                  [disabled]="!hasPackedItems()"
+                  (click)="clearPackedItems()"
+                >
+                  <mat-icon aria-hidden="true">restart_alt</mat-icon>
+                </button>
+              }
+            </div>
           }
         </div>
 

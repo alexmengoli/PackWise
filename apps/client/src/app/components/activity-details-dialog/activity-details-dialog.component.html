@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{ isEditing ? 'Edit activity' : 'New activity' }}</h2>
+
+<mat-dialog-content>
+  <form class="details-form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" autocomplete="off" />
+      @if (form.controls.name.hasError('required')) {
+        <mat-error>Name is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="details-form__grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Icon</mat-label>
+        <input matInput formControlName="icon" autocomplete="off" />
+        <mat-icon matPrefix aria-hidden="true">{{ form.controls.icon.value || 'hiking' }}</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Color</mat-label>
+        <input matInput formControlName="color" autocomplete="off" />
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+  <button mat-flat-button type="button" (click)="save()">{{ isEditing ? 'Save' : 'Create' }}</button>
+</mat-dialog-actions>

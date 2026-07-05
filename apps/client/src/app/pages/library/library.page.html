@@ -1,1 +1,159 @@
+<main class="library-page">
+  <div class="library-page__layout">
+    <header class="library-page__hero">
+      <h1 class="library-page__title">Library</h1>
+      <p class="library-page__subtitle">Browse the activities and items saved on this device.</p>
+    </header>
 
+    @if (loading()) {
+      <mat-card appearance="outlined" class="library-section">
+        <mat-card-content>
+          <div class="library-page__loading">
+            <mat-progress-bar mode="indeterminate" />
+            <p>Loading your local library...</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    } @else {
+      <mat-card appearance="outlined" class="library-section">
+        <mat-card-content>
+          <div class="library-section__heading">
+            <h2 class="library-section__title">Activities</h2>
+            <p class="library-section__subtitle">Every activity saved in your local organizer.</p>
+            <button
+              mat-icon-button
+              type="button"
+              class="library-section__action"
+              aria-label="Create activity"
+              title="Create activity"
+              (click)="createActivity()"
+            >
+              <mat-icon aria-hidden="true">add</mat-icon>
+            </button>
+          </div>
+
+          @if (activities().length === 0) {
+            <div class="library-page__empty library-page__empty--center">
+              <mat-icon aria-hidden="true">hiking</mat-icon>
+              <p>No activities saved yet.</p>
+            </div>
+          } @else {
+            <div class="activity-list" aria-label="Saved activities">
+              @for (activity of activities(); track activity.id) {
+                <article
+                  class="activity-row"
+                  [style.--activity-color]="activity.color ?? 'var(--mat-sys-primary)'"
+                >
+                  <span class="activity-row__icon-wrap">
+                    <mat-icon class="activity-row__icon" aria-hidden="true">{{ activityIcon(activity) }}</mat-icon>
+                  </span>
+
+                  <span class="activity-row__body">
+                    <span class="activity-row__name">{{ activity.name }}</span>
+
+                    @if (activity.description) {
+                      <span class="activity-row__description">{{ activity.description }}</span>
+                    }
+                  </span>
+
+                  <span class="activity-row__count">{{ itemCount(activity.id) }} items</span>
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="activity-row__edit"
+                    [attr.aria-label]="'Edit ' + activity.name"
+                    [title]="'Edit ' + activity.name"
+                    (click)="editActivity(activity)"
+                  >
+                    <mat-icon aria-hidden="true">edit</mat-icon>
+                  </button>
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="activity-row__delete"
+                    [attr.aria-label]="'Delete ' + activity.name"
+                    [title]="'Delete ' + activity.name"
+                    (click)="deleteActivity(activity)"
+                  >
+                    <mat-icon aria-hidden="true">delete</mat-icon>
+                  </button>
+                </article>
+              }
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined" class="library-section">
+        <mat-card-content>
+          <div class="library-section__heading">
+            <h2 class="library-section__title">Items</h2>
+            <p class="library-section__subtitle">Everything available for packing lists.</p>
+            <button
+              mat-icon-button
+              type="button"
+              class="library-section__action"
+              aria-label="Create item"
+              title="Create item"
+              (click)="createItem()"
+            >
+              <mat-icon aria-hidden="true">add</mat-icon>
+            </button>
+          </div>
+
+          @if (items().length === 0) {
+            <div class="library-page__empty library-page__empty--center">
+              <mat-icon aria-hidden="true">inventory_2</mat-icon>
+              <p>No items saved yet.</p>
+            </div>
+          } @else {
+            <div class="item-list" aria-label="Saved items">
+              @for (item of items(); track item.id) {
+                <article class="item-row">
+                  <div class="item-row__heading">
+                    <h3 class="item-row__name">{{ item.name }}</h3>
+                    <span class="item-row__category">{{ categoryName(item) }}</span>
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="item-row__edit"
+                      [attr.aria-label]="'Edit ' + item.name"
+                      [title]="'Edit ' + item.name"
+                      (click)="editItem(item)"
+                    >
+                      <mat-icon aria-hidden="true">edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="item-row__delete"
+                      [attr.aria-label]="'Delete ' + item.name"
+                      [title]="'Delete ' + item.name"
+                      (click)="deleteItem(item)"
+                    >
+                      <mat-icon aria-hidden="true">delete</mat-icon>
+                    </button>
+                  </div>
+
+                  @if (item.description) {
+                    <p class="item-row__description">{{ item.description }}</p>
+                  }
+
+                  <div class="item-row__labels" aria-label="Assigned activities">
+                    @for (label of activityLabels(item); track label) {
+                      <span class="item-row__label" [class.item-row__label--mandatory]="item.mandatory">{{
+                        label
+                      }}</span>
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</main>

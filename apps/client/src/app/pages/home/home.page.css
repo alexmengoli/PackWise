@@ -72,8 +72,6 @@
 
 .home-section__reset {
   display: inline-grid;
-  grid-row: 1 / span 2;
-  grid-column: 2;
   place-items: center;
   transition:
     background 160ms ease,
@@ -102,6 +100,14 @@
 .home-section__reset:disabled {
   cursor: default;
   opacity: 0.38;
+}
+
+.home-section__actions {
+  display: inline-flex;
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  gap: 0.25rem;
+  align-items: center;
 }
 
 .activity-grid-shell {
@@ -181,6 +187,27 @@
     inset 0 0 0 .1875rem light-dark(#0008,#ffffffe6),
     var(--mat-sys-level3);
   background: light-dark(color-mix(in srgb,var(--activity-color) 92%,#fff),var(--activity-color));
+}
+
+.activity-tile--create {
+  box-shadow: none;
+  border: 0.125rem dashed var(--mat-sys-outline);
+  background: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+}
+
+.activity-tile--create:hover {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.activity-tile--create .activity-tile__icon-wrap {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.activity-tile--create .activity-tile__icon,
+.activity-tile--create .activity-tile__meta {
+  color: inherit;
 }
 
 .activity-tile__content {
