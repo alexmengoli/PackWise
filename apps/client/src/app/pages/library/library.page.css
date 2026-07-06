@@ -111,6 +111,14 @@
   gap: 0.75rem;
 }
 
+.item-search {
+  width: 100%;
+}
+
+.item-search mat-icon {
+  color: var(--mat-sys-on-surface-variant);
+}
+
 .activity-row,
 .item-row {
   box-shadow: var(--mat-sys-level1);

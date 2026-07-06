@@ -2,7 +2,9 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ITEM_CATEGORIES, type Activity, type Item, type ItemCategoryDefinition } from '@packwise/shared';
 import type { Observable } from 'rxjs';
@@ -24,7 +26,7 @@ import type { CreateActivityInput, CreateItemInput } from '../../types/data.type
 
 @Component({
   selector: 'app-library-page',
-  imports: [MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule],
+  imports: [MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatProgressBarModule],
   templateUrl: './library.page.html',
   styleUrl: './library.page.css',
 })
@@ -40,7 +42,17 @@ export class LibraryPage {
   );
   protected readonly activities = this.activityRepository.activities;
   protected readonly expandedActivityLabelId = signal<string | undefined>(undefined);
+  protected readonly itemSearch = signal('');
   protected readonly items = this.itemRepository.items;
+  protected readonly filteredItems = computed((): Item[] => {
+    const searchTerm: string = normalizeSearchTerm(this.itemSearch());
+
+    if (!searchTerm) {
+      return this.items();
+    }
+
+    return this.items().filter((item: Item): boolean => this.itemMatchesSearch(item, searchTerm));
+  });
 
   protected activityIcon(activity: Activity): string {
     return activity.icon ?? 'hiking';
@@ -88,6 +100,14 @@ export class LibraryPage {
 
       void this.itemRepository.deleteItem(item.id).catch((error: unknown): void => console.error(error));
     });
+  }
+
+  protected updateItemSearch(event: Event): void {
+    this.itemSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  protected clearItemSearch(): void {
+    this.itemSearch.set('');
   }
 
   protected itemCount(activityId: string): number {
@@ -260,8 +280,26 @@ export class LibraryPage {
   private activityLabelKey(item: Item, activity: Activity): string {
     return `${item.id}:${activity.id}`;
   }
+
+  private itemMatchesSearch(item: Item, searchTerm: string): boolean {
+    const fields: string[] = [
+      item.name,
+      item.description ?? '',
+      item.categoryId ?? '',
+      this.categoryName(item) ?? '',
+      item.weight ?? '',
+      item.size ?? '',
+      item.notes ?? '',
+    ];
+
+    return fields.some((field: string): boolean => normalizeSearchTerm(field).includes(searchTerm));
+  }
 }
 
 function normalizeName(name: string): string {
   return name.trim().toLocaleLowerCase();
+}
+
+function normalizeSearchTerm(value: string): string {
+  return value.trim().toLocaleLowerCase();
 }

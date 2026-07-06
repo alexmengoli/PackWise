@@ -109,67 +109,100 @@
                 <p>No items saved yet.</p>
               </div>
             } @else {
-              <div class="item-list" aria-label="Saved items">
-                @for (item of items(); track item.id) {
-                  <article class="item-row">
-                    <div class="item-row__heading">
-                      <h3 class="item-row__name">{{ item.name }}</h3>
-                      @if (categoryName(item); as category) {
-                        <span class="item-row__category">#{{ category }}</span>
-                      }
-                      <button
-                        mat-icon-button
-                        type="button"
-                        class="item-row__edit"
-                        [attr.aria-label]="'Edit ' + item.name"
-                        [title]="'Edit ' + item.name"
-                        (click)="editItem(item)"
-                      >
-                        <mat-icon aria-hidden="true">edit</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        type="button"
-                        class="item-row__delete"
-                        [attr.aria-label]="'Delete ' + item.name"
-                        [title]="'Delete ' + item.name"
-                        (click)="deleteItem(item)"
-                      >
-                        <mat-icon aria-hidden="true">delete</mat-icon>
-                      </button>
-                    </div>
-
-                    @if (item.description) {
-                      <p class="item-row__description">{{ item.description }}</p>
-                    }
-
-                    <div class="item-row__labels" aria-label="Assigned activities">
-                      @if (isUnassigned(item)) {
-                        <span class="item-row__label item-row__label--unassigned">
-                          <mat-icon class="item-row__label-icon" aria-hidden="true">warning</mat-icon>
-                          Unassigned
-                        </span>
-                      } @else {
-                        @for (activity of itemActivities(item); track activity.id) {
-                          <button
-                            type="button"
-                            class="item-row__label"
-                            [class.item-row__label--expanded]="isActivityLabelExpanded(item, activity)"
-                            [style.--activity-color]="activity.color ?? 'var(--mat-sys-primary)'"
-                            [attr.aria-label]="activity.name"
-                            [attr.aria-pressed]="isActivityLabelExpanded(item, activity)"
-                            [title]="activity.name"
-                            (click)="toggleActivityLabel(item, activity)"
-                          >
-                            <mat-icon class="item-row__label-icon" aria-hidden="true">{{ activityIcon(activity) }}</mat-icon>
-                            <span class="item-row__label-name">{{ activity.name }}</span>
-                          </button>
-                        }
-                      }
-                    </div>
-                  </article>
+              <mat-form-field class="item-search" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Search items</mat-label>
+                <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+                <input
+                  matInput
+                  type="search"
+                  autocomplete="off"
+                  [value]="itemSearch()"
+                  (input)="updateItemSearch($event)"
+                />
+                @if (itemSearch()) {
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    type="button"
+                    aria-label="Clear item search"
+                    title="Clear item search"
+                    (click)="clearItemSearch()"
+                  >
+                    <mat-icon aria-hidden="true">close</mat-icon>
+                  </button>
                 }
-              </div>
+              </mat-form-field>
+
+              @if (filteredItems().length === 0) {
+                <div class="library-page__empty library-page__empty--center">
+                  <mat-icon aria-hidden="true">search_off</mat-icon>
+                  <p>No items match your search.</p>
+                </div>
+              } @else {
+                <div class="item-list" aria-label="Saved items">
+                  @for (item of filteredItems(); track item.id) {
+                    <article class="item-row">
+                      <div class="item-row__heading">
+                        <h3 class="item-row__name">{{ item.name }}</h3>
+                        @if (categoryName(item); as category) {
+                          <span class="item-row__category">#{{ category }}</span>
+                        }
+                        <button
+                          mat-icon-button
+                          type="button"
+                          class="item-row__edit"
+                          [attr.aria-label]="'Edit ' + item.name"
+                          [title]="'Edit ' + item.name"
+                          (click)="editItem(item)"
+                        >
+                          <mat-icon aria-hidden="true">edit</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          class="item-row__delete"
+                          [attr.aria-label]="'Delete ' + item.name"
+                          [title]="'Delete ' + item.name"
+                          (click)="deleteItem(item)"
+                        >
+                          <mat-icon aria-hidden="true">delete</mat-icon>
+                        </button>
+                      </div>
+
+                      @if (item.description) {
+                        <p class="item-row__description">{{ item.description }}</p>
+                      }
+
+                      <div class="item-row__labels" aria-label="Assigned activities">
+                        @if (isUnassigned(item)) {
+                          <span class="item-row__label item-row__label--unassigned">
+                            <mat-icon class="item-row__label-icon" aria-hidden="true">warning</mat-icon>
+                            Unassigned
+                          </span>
+                        } @else {
+                          @for (activity of itemActivities(item); track activity.id) {
+                            <button
+                              type="button"
+                              class="item-row__label"
+                              [class.item-row__label--expanded]="isActivityLabelExpanded(item, activity)"
+                              [style.--activity-color]="activity.color ?? 'var(--mat-sys-primary)'"
+                              [attr.aria-label]="activity.name"
+                              [attr.aria-pressed]="isActivityLabelExpanded(item, activity)"
+                              [title]="activity.name"
+                              (click)="toggleActivityLabel(item, activity)"
+                            >
+                              <mat-icon class="item-row__label-icon" aria-hidden="true">{{
+                                activityIcon(activity)
+                              }}</mat-icon>
+                              <span class="item-row__label-name">{{ activity.name }}</span>
+                            </button>
+                          }
+                        }
+                      </div>
+                    </article>
+                  }
+                </div>
+              }
             }
           </mat-card-content>
         </mat-card>
