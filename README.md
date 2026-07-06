@@ -16,15 +16,17 @@ network access.
 ## Documentation
 
 - [Project status](docs/project-status.md): product overview, current scope, MVP notes, and future ideas.
-- [Layout and flow](docs/layout-and-flow.md): navigation, Pack screen, Library, and planned Settings flow.
+- [Layout and flow](docs/layout-and-flow.md): navigation, Pack screen, Library, and Settings flow.
 
 ## Current Status
 
 - Pack is available at `/` and lets users select one or more activities to generate a live checklist.
 - Library is available at `/library` and supports local create, edit, and delete flows for activities and items.
+- Settings is available at `/settings` for local data export, import, and delete-all operations.
 - Local data is stored on-device in IndexedDB as a single snapshot.
+- Import/export uses a PackWise JSON envelope around the local snapshot.
 - Packed/unpacked checklist state is currently session-only.
-- Settings and import/export UI are not implemented yet.
+- Optional cloud sync is represented only as a disabled future entry point; it is not required for core use.
 
 ## Commands
 
@@ -43,4 +45,4 @@ pnpm --filter @packwise/client build
 pnpm --filter @packwise/shared build
 ```
 
-There is currently no root `test` script.
+There is currently no root `test` script. The root `build` script builds `@packwise/shared` first, then `@packwise/client`.

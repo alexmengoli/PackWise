@@ -63,6 +63,25 @@ The current client stores local data in IndexedDB as a single snapshot object:
 The storage adapter can migrate older separate `activities` and `items` object stores into the
 snapshot format when found.
 
+Exports wrap that snapshot in a small PackWise JSON envelope:
+
+```json
+{
+  "app": "packwise",
+  "version": 1,
+  "exportedAt": "2026-07-06T00:00:00.000Z",
+  "data": {
+    "id": "local",
+    "version": 1,
+    "activities": [],
+    "items": []
+  }
+}
+```
+
+Imports accept either this envelope or a valid raw snapshot, then replace the current local
+snapshot after user confirmation.
+
 ## Initial Data Model
 
 ### Items
@@ -129,24 +148,27 @@ The repository currently includes:
 - A standalone Angular client using Angular Material and standalone route components.
 - A Pack screen at the root route.
 - A Library screen at `/library`.
-- A bottom navigation shell with Pack and Library wired.
+- A Settings screen at `/settings`.
+- A bottom navigation shell with Pack, Library, and Settings wired.
 - Item categories shown as groups in the packing checklist.
 - Activity and item creation from the Pack screen.
 - Activity creation, editing, and deletion from Library.
 - Item creation, editing, and deletion from Library.
+- Item search in Library.
 - Activity dialogs with name, description, icon, and hue-based color selection.
 - Item dialogs with name, description, category, mandatory flag, activity assignments, notes, size, and weight.
+- Settings data operations for exporting JSON, importing JSON, and deleting all local data.
+- A disabled future Cloud Sync entry point in Settings.
 - Local IndexedDB persistence through `IndexedDbPackwiseStorageAdapterService`.
+- Data portability through `DataPortabilityService`.
 - Item and activity repository services with create, update, delete, refresh, loading, and error state.
 - Activity deletion removes that activity reference from existing items.
 - Shared framework-independent `Activity`, `Item`, and item category TypeScript definitions.
 
 Not implemented yet:
 
-- Settings screen.
-- Import/export UI.
 - Persisted packed/unpacked checklist state.
-- Search or filtering inside Library.
+- Advanced filtering inside Library beyond item search.
 - Tests.
 
 ## Core User Flow
@@ -178,12 +200,12 @@ Implemented MVP pieces:
 - Activity assignment for items.
 - Live checklist generation from selected activities.
 - Local IndexedDB persistence for activities and items.
+- Settings import/export for local JSON backups.
 
 Remaining MVP pieces:
 
 - Persist packed/unpacked state if that behavior should survive reloads.
-- Add import/export UI.
-- Add Settings as the place for local data operations.
+- Refine first-run and empty states.
 
 ## Future Ideas
 

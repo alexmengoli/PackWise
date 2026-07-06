@@ -19,6 +19,7 @@ This repo is a pnpm monorepo named `packwise`.
 
 - `apps/client`: the complete plain Angular client application.
 - `packages/shared`: framework-independent TypeScript models, types, and reusable domain utilities.
+- `docs`: product status, layout, and flow notes.
 - `package.json`: root workspace scripts that delegate to packages.
 - `pnpm-workspace.yaml`: pnpm workspace package discovery.
 - `AGENTS.md`: instructions for Codex and other coding agents.
@@ -35,6 +36,7 @@ Use pnpm for all workspace dependency and script operations.
 - Use `pnpm install` to install dependencies.
 - Use root scripts such as `pnpm build`, `pnpm lint`, and `pnpm test`.
 - Use workspace filters for package-specific commands, for example `pnpm --filter @packwise/client build` or `pnpm --filter @packwise/shared build`.
+- There is currently no root `test` script; do not report test results unless a test command actually exists and has been run.
 - Do not use npm, yarn, or package-lock files in this repository unless a task explicitly requires a migration.
 
 ## Core engineering rules
@@ -59,18 +61,7 @@ The current MVP includes:
 - marking items as packed
 - local persistence
 - import/export where appropriate
-
-Do not add these unless explicitly requested:
-
-- collaboration
-- social features
-- public profiles
-- AI recommendations
-- travel itinerary planning
-- shopping or inventory management
-- mandatory accounts
-- subscriptions or payment flows
-- backend infrastructure
+- local data deletion where appropriate
 
 ## Architecture expectations
 

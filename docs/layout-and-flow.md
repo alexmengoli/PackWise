@@ -14,8 +14,8 @@ Current implementation:
 
 - Pack is implemented at the root route.
 - Library is implemented at `/library`.
-- The bottom navigation shell currently exposes Pack and Library.
-- Settings is still planned.
+- Settings is implemented at `/settings`.
+- The bottom navigation shell exposes Pack, Library, and Settings.
 
 ## Navigation Model
 
@@ -154,6 +154,7 @@ Current status:
 
 - Accessed from the Library destination in the bottom navigation.
 - Shows a local list of saved items with category labels and activity labels.
+- Supports item search by name, description, category, weight, size, and notes.
 - Supports create/edit through a `MatDialog`.
 - Supports assigning items to activities through a multi-select.
 - Supports a mandatory "Use for every activity" flag.
@@ -161,7 +162,7 @@ Current status:
 
 Still planned:
 
-- Search or filtering.
+- Advanced filtering beyond item search.
 - A more compact Library switching model if the page becomes crowded.
 
 ## Activities Window
@@ -191,7 +192,11 @@ The Settings window is for local data operations and low-frequency preferences.
 
 Current status:
 
-- Not implemented yet.
+- Implemented at `/settings`.
+- Supports exporting the local snapshot as a PackWise JSON file.
+- Supports importing a PackWise JSON file after confirmation, replacing the current local snapshot.
+- Supports deleting all local activities and items after a destructive confirmation.
+- Shows optional Cloud Sync as a disabled future entry point; sync is not part of the local-first core.
 
 ## Future Sections
 
@@ -199,4 +204,4 @@ The following sections should be added as the product layout becomes clearer:
 
 - Empty states
 - Editing flows
-- Import/export flow
+- Import/export edge cases
