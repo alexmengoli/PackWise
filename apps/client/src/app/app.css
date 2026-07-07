@@ -1,15 +1,18 @@
 :host {
   --app-bottom-nav-height: 5rem;
+  --app-mobile-top-bar-height: 3.5rem;
   --app-nav-rail-width: 6rem;
 
   display: block;
   box-sizing: border-box;
+  padding-top: calc(var(--app-mobile-top-bar-height) + env(safe-area-inset-top));
   padding-bottom: calc(var(--app-bottom-nav-height) + env(safe-area-inset-bottom));
   min-height: 100dvh;
 }
 
 @media (min-width: 960px) {
   :host {
+    padding-top: 0;
     padding-bottom: 0;
     padding-left: var(--app-nav-rail-width);
   }
