@@ -4,22 +4,31 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ITEM_CATEGORIES, type Activity, type Item } from '@packwise/shared';
+import { ITEM_CATEGORIES, type Activity, type Item, type Trip } from '@packwise/shared';
 import { ActivityDetailsDialogComponent } from '../../components/activity-details-dialog/activity-details-dialog.component';
 import type {
   ActivityDetailsDialogData,
   ActivityDetailsDialogResult,
 } from '../../components/activity-details-dialog/activity-details-dialog.types';
+import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
+import type { ConfirmationDialogData } from '../../components/confirmation-dialog/confirmation-dialog.types';
 import { ItemDetailsDialogComponent } from '../../components/item-details-dialog/item-details-dialog.component';
 import type {
   ItemDetailsDialogData,
   ItemDetailsDialogResult,
 } from '../../components/item-details-dialog/item-details-dialog.types';
+import { TripDetailsDialogComponent } from '../../components/trip-details-dialog/trip-details-dialog.component';
+import type {
+  TripDetailsDialogData,
+  TripDetailsDialogResult,
+} from '../../components/trip-details-dialog/trip-details-dialog.types';
 import { ActivityRepositoryService } from '../../services/activity.repository.service';
 import { ItemRepositoryService } from '../../services/item.repository.service';
 import { PackingSessionService } from '../../services/packing-session.service';
-import type { CreateActivityInput, CreateItemInput } from '../../types/data.types';
+import { TripRepositoryService } from '../../services/trip.repository.service';
+import type { CreateActivityInput, CreateItemInput, CreateTripInput } from '../../types/data.types';
 import type { PackingItemCategoryGroup, PackingItemCategoryId } from '../../types/packing-item-category.types';
 
 // constants
@@ -30,7 +39,7 @@ const UNCATEGORIZED_CATEGORY: Pick<PackingItemCategoryGroup, 'id' | 'name'> = {
 
 @Component({
   selector: 'app-home-page',
-  imports: [MatButtonModule, MatCardModule, MatCheckboxModule, MatIconModule, MatProgressBarModule],
+  imports: [MatButtonModule, MatCardModule, MatCheckboxModule, MatIconModule, MatMenuModule, MatProgressBarModule],
   templateUrl: './home.page.html',
   styleUrl: './home.page.css',
 })
@@ -40,19 +49,28 @@ export class HomePage {
   private readonly dialog = inject(MatDialog);
   private readonly itemRepository = inject(ItemRepositoryService);
   private readonly packingSession = inject(PackingSessionService);
+  private readonly tripRepository = inject(TripRepositoryService);
 
   // state
+  private readonly activeTripIdSignal = signal<string | undefined>(this.packingSession.loadActiveTripId());
   private readonly selectedActivityIdsSignal = signal<string[]>(this.packingSession.loadSelectedActivityIds());
   private readonly packedItemIdsSignal = signal<string[]>(this.packingSession.loadPackedItemIds());
 
   // data
   protected readonly loading = computed(
-    (): boolean => this.activityRepository.loading() || this.itemRepository.loading(),
+    (): boolean => this.activityRepository.loading() || this.itemRepository.loading() || this.tripRepository.loading(),
   );
   protected readonly activities = this.activityRepository.activities;
   protected readonly items = this.itemRepository.items;
-  protected readonly selectedActivityIds = this.selectedActivityIdsSignal.asReadonly();
-  protected readonly hasPackedItems = computed((): boolean => this.packedItemIdsSignal().length > 0);
+  protected readonly trips = this.tripRepository.trips;
+  protected readonly activeTrip = computed((): Trip | undefined => {
+    const activeTripId: string | undefined = this.activeTripIdSignal();
+
+    return activeTripId ? this.trips().find((trip: Trip): boolean => trip.id === activeTripId) : undefined;
+  });
+  protected readonly selectedActivityIds = computed((): string[] => this.activeTrip()?.activityIds ?? this.selectedActivityIdsSignal());
+  protected readonly packedItemIds = computed((): string[] => this.activeTrip()?.packedItemIds ?? this.packedItemIdsSignal());
+  protected readonly hasPackedItems = computed((): boolean => this.packedItemIds().length > 0);
   protected readonly packingItems = computed((): Item[] => {
     const selectedActivityIds: string[] = this.selectedActivityIds();
 
@@ -76,6 +94,51 @@ export class HomePage {
 
   protected itemCount(activityId: string): number {
     return this.items().filter((item: Item): boolean => item.mandatory || item.activityIds.includes(activityId)).length;
+  }
+
+  protected closeTrip(): void {
+    this.activeTripIdSignal.set(undefined);
+    this.packingSession.clearActiveTripId();
+  }
+
+  protected openTrip(trip: Trip): void {
+    this.activeTripIdSignal.set(trip.id);
+    this.packingSession.saveActiveTripId(trip.id);
+  }
+
+  protected saveCurrentTrip(): void {
+    this.openTripDialog();
+  }
+
+  protected editTrip(trip: Trip): void {
+    this.openTripDialog(trip);
+  }
+
+  protected deleteTrip(trip: Trip): void {
+    this.dialog
+      .open<ConfirmationDialogComponent, ConfirmationDialogData, boolean>(ConfirmationDialogComponent, {
+        data: {
+          title: 'Delete trip?',
+          message: `Delete ${trip.name}? Your items and activities will stay in your library.`,
+          confirmLabel: 'Delete',
+          confirmTone: 'danger',
+        },
+        maxWidth: 'calc(100vw - 1rem)',
+        width: '28rem',
+      })
+      .afterClosed()
+      .subscribe((confirmed: boolean | undefined): void => {
+        if (!confirmed) {
+          return;
+        }
+
+        if (this.activeTripIdSignal() === trip.id) {
+          this.activeTripIdSignal.set(undefined);
+          this.packingSession.clearActiveTripId();
+        }
+
+        void this.tripRepository.deleteTrip(trip.id).catch((error: unknown): void => console.error(error));
+      });
   }
 
   protected createActivity(): void {
@@ -143,30 +206,54 @@ export class HomePage {
   }
 
   protected toggleActivity(activityId: string): void {
-    this.selectedActivityIdsSignal.update((selectedActivityIds: string[]): string[] =>
-      selectedActivityIds.includes(activityId)
-        ? selectedActivityIds.filter((currentId: string): boolean => currentId !== activityId)
-        : [...selectedActivityIds, activityId],
-    );
-    this.packingSession.saveSelectedActivityIds(this.selectedActivityIdsSignal());
+    const selectedActivityIds: string[] = this.toggleId(this.selectedActivityIds(), activityId);
+    const activeTrip: Trip | undefined = this.activeTrip();
+
+    if (activeTrip) {
+      void this.tripRepository
+        .updateTrip(activeTrip.id, { activityIds: selectedActivityIds })
+        .catch((error: unknown): void => console.error(error));
+
+      return;
+    }
+
+    this.selectedActivityIdsSignal.set(selectedActivityIds);
+    this.packingSession.saveSelectedActivityIds(selectedActivityIds);
   }
 
   protected togglePacked(itemId: string): void {
-    this.packedItemIdsSignal.update((packedItemIds: string[]): string[] =>
-      packedItemIds.includes(itemId)
-        ? packedItemIds.filter((currentId: string): boolean => currentId !== itemId)
-        : [...packedItemIds, itemId],
-    );
-    this.packingSession.savePackedItemIds(this.packedItemIdsSignal());
+    const packedItemIds: string[] = this.toggleId(this.packedItemIds(), itemId);
+    const activeTrip: Trip | undefined = this.activeTrip();
+
+    if (activeTrip) {
+      void this.tripRepository
+        .updateTrip(activeTrip.id, { packedItemIds })
+        .catch((error: unknown): void => console.error(error));
+
+      return;
+    }
+
+    this.packedItemIdsSignal.set(packedItemIds);
+    this.packingSession.savePackedItemIds(packedItemIds);
   }
 
   protected clearPackedItems(): void {
+    const activeTrip: Trip | undefined = this.activeTrip();
+
+    if (activeTrip) {
+      void this.tripRepository
+        .updateTrip(activeTrip.id, { packedItemIds: [] })
+        .catch((error: unknown): void => console.error(error));
+
+      return;
+    }
+
     this.packedItemIdsSignal.set([]);
     this.packingSession.clearPackedItemIds();
   }
 
   protected isPacked(itemId: string): boolean {
-    return this.packedItemIdsSignal().includes(itemId);
+    return this.packedItemIds().includes(itemId);
   }
 
   protected isSelected(activityId: string): boolean {
@@ -259,6 +346,30 @@ export class HomePage {
       });
   }
 
+  private openTripDialog(trip?: Trip): void {
+    this.dialog
+      .open<TripDetailsDialogComponent, TripDetailsDialogData, TripDetailsDialogResult | undefined>(
+        TripDetailsDialogComponent,
+        {
+          maxWidth: 'calc(100vw - 1rem)',
+          width: '38rem',
+          data: {
+            activityIds: this.selectedActivityIds(),
+            packedItemIds: this.packedItemIds(),
+            trip,
+          },
+        },
+      )
+      .afterClosed()
+      .subscribe((result: TripDetailsDialogResult | undefined): void => {
+        if (!result) {
+          return;
+        }
+
+        void this.saveTrip(result.input, trip?.id).catch((error: unknown): void => console.error(error));
+      });
+  }
+
   private openExistingActivityById(activityId: string): void {
     const activity: Activity | undefined = this.activities().find(
       (currentActivity: Activity): boolean => currentActivity.id === activityId,
@@ -297,11 +408,39 @@ export class HomePage {
     return itemId ? this.itemRepository.updateItem(itemId, input) : this.itemRepository.createItem(input);
   }
 
+  private saveTrip(input: CreateTripInput, tripId?: string): Promise<Trip> {
+    if (tripId) {
+      return this.tripRepository.updateTrip(tripId, input);
+    }
+
+    return this.tripRepository.createTrip(input).then((trip: Trip): Trip => {
+      this.activeTripIdSignal.set(trip.id);
+      this.packingSession.saveActiveTripId(trip.id);
+
+      return trip;
+    });
+  }
+
   private selectActivity(activityId: string): void {
-    this.selectedActivityIdsSignal.update((selectedActivityIds: string[]): string[] =>
-      selectedActivityIds.includes(activityId) ? selectedActivityIds : [...selectedActivityIds, activityId],
-    );
-    this.packingSession.saveSelectedActivityIds(this.selectedActivityIdsSignal());
+    const selectedActivityIds: string[] = this.selectedActivityIds().includes(activityId)
+      ? this.selectedActivityIds()
+      : [...this.selectedActivityIds(), activityId];
+    const activeTrip: Trip | undefined = this.activeTrip();
+
+    if (activeTrip) {
+      void this.tripRepository
+        .updateTrip(activeTrip.id, { activityIds: selectedActivityIds })
+        .catch((error: unknown): void => console.error(error));
+
+      return;
+    }
+
+    this.selectedActivityIdsSignal.set(selectedActivityIds);
+    this.packingSession.saveSelectedActivityIds(selectedActivityIds);
+  }
+
+  private toggleId(ids: string[], id: string): string[] {
+    return ids.includes(id) ? ids.filter((currentId: string): boolean => currentId !== id) : [...ids, id];
   }
 }
 

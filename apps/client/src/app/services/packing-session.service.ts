@@ -1,11 +1,38 @@
 import { Injectable } from '@angular/core';
 
 // constants
+const ACTIVE_TRIP_ID_KEY: string = 'packwise.packingSession.activeTripId';
 const PACKED_ITEM_IDS_KEY: string = 'packwise.packingSession.packedItemIds';
 const SELECTED_ACTIVITY_IDS_KEY: string = 'packwise.packingSession.selectedActivityIds';
 
 @Injectable({ providedIn: 'root' })
 export class PackingSessionService {
+  public loadActiveTripId(): string | undefined {
+    try {
+      const storedValue: string | null = localStorage.getItem(ACTIVE_TRIP_ID_KEY);
+
+      return storedValue && storedValue.length > 0 ? storedValue : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  public saveActiveTripId(tripId: string): void {
+    try {
+      localStorage.setItem(ACTIVE_TRIP_ID_KEY, tripId);
+    } catch {
+      return;
+    }
+  }
+
+  public clearActiveTripId(): void {
+    try {
+      localStorage.removeItem(ACTIVE_TRIP_ID_KEY);
+    } catch {
+      return;
+    }
+  }
+
   public loadSelectedActivityIds(): string[] {
     try {
       const storedValue: string | null = sessionStorage.getItem(SELECTED_ACTIVITY_IDS_KEY);

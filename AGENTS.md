@@ -5,6 +5,7 @@
 This repository contains **Packwise**, an offline-first packing organizer.
 
 Users create items, assign them to one or more activities (for example: camping, beach, MTB), and generate packing lists based on selected activities.
+Users can also save trip-specific packing sessions so each trip can keep its selected activities and packed item state separate from the reusable item library.
 
 The long-term product architecture is:
 
@@ -60,6 +61,7 @@ The current MVP includes:
 - assigning items to activities
 - generating packing lists from selected activities
 - marking items as packed
+- saved trips with trip-specific selected activities and packed item state
 - local persistence
 - import/export where appropriate
 - local data deletion where appropriate

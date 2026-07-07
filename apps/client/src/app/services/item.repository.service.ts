@@ -8,11 +8,13 @@ import type {
 } from '../types/data.types';
 import { createLocalId } from '../utils/local-id';
 import { IndexedDbPackwiseStorageAdapterService } from './indexed-db-packwise-storage.adapter.service';
+import { TripRepositoryService } from './trip.repository.service';
 
 @Injectable({ providedIn: 'root' })
 export class ItemRepositoryService {
   // injections
   private readonly storage = inject(IndexedDbPackwiseStorageAdapterService);
+  private readonly tripRepository = inject(TripRepositoryService);
 
   // state
   private readonly itemsSignal: WritableSignal<Item[]> = signal<Item[]>([]);
@@ -102,6 +104,7 @@ export class ItemRepositoryService {
 
     await this.storage.saveSnapshot(updatedSnapshot);
     this.itemsSignal.set(sortItems(updatedSnapshot.items));
+    await this.tripRepository.removePackedItemReference(id);
   }
 
   public async removeActivityReference(activityId: string): Promise<void> {

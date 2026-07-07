@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import type { Activity, Item } from '@packwise/shared';
+import type { Activity, Item, Trip } from '@packwise/shared';
 
 import type { PackwiseDataExport } from '../types/data-import-export.types';
 import type { PackwiseDataSnapshot } from '../types/data.types';
@@ -50,6 +50,7 @@ function normalizeSnapshot(data: unknown): PackwiseDataSnapshot {
     version: EXPORT_VERSION,
     activities: snapshot.activities,
     items: snapshot.items,
+    trips: snapshot.trips ?? [],
   };
 }
 
@@ -59,6 +60,7 @@ function createEmptySnapshot(): PackwiseDataSnapshot {
     version: EXPORT_VERSION,
     activities: [],
     items: [],
+    trips: [],
   };
 }
 
@@ -80,7 +82,8 @@ function isSnapshot(data: unknown): data is PackwiseDataSnapshot {
     Array.isArray(data['activities']) &&
     data['activities'].every(isActivity) &&
     Array.isArray(data['items']) &&
-    data['items'].every(isItem)
+    data['items'].every(isItem) &&
+    (data['trips'] === undefined || (Array.isArray(data['trips']) && data['trips'].every(isTrip)))
   );
 }
 
@@ -107,6 +110,21 @@ function isItem(data: unknown): data is Item {
     typeof data['mandatory'] === 'boolean' &&
     Array.isArray(data['activityIds']) &&
     data['activityIds'].every((activityId: unknown): activityId is string => typeof activityId === 'string') &&
+    typeof data['createdAt'] === 'string' &&
+    typeof data['updatedAt'] === 'string'
+  );
+}
+
+function isTrip(data: unknown): data is Trip {
+  return (
+    isRecord(data) &&
+    typeof data['id'] === 'string' &&
+    typeof data['name'] === 'string' &&
+    isOptionalString(data['description']) &&
+    Array.isArray(data['activityIds']) &&
+    data['activityIds'].every((activityId: unknown): activityId is string => typeof activityId === 'string') &&
+    Array.isArray(data['packedItemIds']) &&
+    data['packedItemIds'].every((itemId: unknown): itemId is string => typeof itemId === 'string') &&
     typeof data['createdAt'] === 'string' &&
     typeof data['updatedAt'] === 'string'
   );

@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.trip-form {
+  display: grid;
+  gap: 0.875rem;
+  padding-block-start: 0.25rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+mat-dialog-content {
+  max-height: min(68dvh, 32rem);
+}
+
+mat-dialog-actions {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (min-width: 520px) {
+  .trip-form {
+    max-width: 36rem;
+  }
+}
+
+@media (max-width: 519px) {
+  mat-dialog-actions button {
+    flex: 1 1 8rem;
+  }
+}

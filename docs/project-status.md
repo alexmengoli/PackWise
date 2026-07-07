@@ -2,7 +2,7 @@
 
 PackWise is an offline-first packing organizer for people who want to prepare bags, backpacks, or gear kits based on the activity they are about to do.
 
-Users can define their own items, group them by one or more activities, and generate a packing checklist by selecting the relevant activities. The core app should remain usable without an account, network access, or cloud sync.
+Users can define their own items, group them by one or more activities, generate a packing checklist by selecting the relevant activities, and save trip-specific packing sessions. The core app should remain usable without an account, network access, or cloud sync.
 
 This document tracks product scope, implementation status, flow decisions, and future ideas.
 
@@ -48,6 +48,25 @@ selected activity.
 An activity represents a context the user is packing for, such as Beach, Camping, MTB, Hiking, or
 Gym. Activities can include an optional display color and icon identifier.
 
+### Trips
+
+A trip represents a saved packing session for a specific preparation, such as Weekend camping or
+Bike park day. Trips store the selected activities and packed item state for that preparation, but
+they do not snapshot item details. The checklist is still generated from the current local item
+library.
+
+Example:
+
+```json
+{
+  "id": "trip-1",
+  "name": "Weekend camping",
+  "description": "Two nights by the lake",
+  "activityIds": ["activity-camping", "activity-hiking"],
+  "packedItemIds": ["item-1"]
+}
+```
+
 ### Local Snapshot
 
 The current client stores local data in IndexedDB as a single snapshot object:
@@ -57,12 +76,14 @@ The current client stores local data in IndexedDB as a single snapshot object:
   "id": "local",
   "version": 1,
   "activities": [],
-  "items": []
+  "items": [],
+  "trips": []
 }
 ```
 
 The storage adapter can migrate older separate `activities` and `items` object stores into the
-snapshot format when found.
+snapshot format when found. Older snapshots that do not include `trips` are normalized with an
+empty trips array.
 
 Exports wrap that snapshot in a small PackWise JSON envelope:
 
@@ -75,13 +96,14 @@ Exports wrap that snapshot in a small PackWise JSON envelope:
     "id": "local",
     "version": 1,
     "activities": [],
-    "items": []
+    "items": [],
+    "trips": []
   }
 }
 ```
 
-Imports accept either this envelope or a valid raw snapshot, then replace the current local
-snapshot after user confirmation.
+Imports accept either this envelope or a valid raw snapshot, including older snapshots without
+trips, then replace the current local snapshot after user confirmation.
 
 ## Initial Data Model
 
@@ -116,6 +138,20 @@ Examples: Beach, Camping, MTB, Hiking, Skiing.
 | `created_at`  | datetime      | Yes      | Creation timestamp.                              |
 | `updated_at`  | datetime      | Yes      | Last update timestamp.                           |
 
+### Trips
+
+Represents a saved packing session with its own activity selection and checked item state.
+
+| Field           | Type          | Required | Description                                                   |
+| --------------- | ------------- | -------- | ------------------------------------------------------------- |
+| `id`            | UUID / string | Yes      | Unique trip identifier.                                       |
+| `name`          | string        | Yes      | Trip name.                                                    |
+| `description`   | string        | No       | Optional notes for the trip.                                  |
+| `activityIds`   | string[]      | Yes      | Activities selected for this saved trip.                      |
+| `packedItemIds` | string[]      | Yes      | Items marked packed for this saved trip.                      |
+| `created_at`    | datetime      | Yes      | Creation timestamp.                                           |
+| `updated_at`    | datetime      | Yes      | Last update timestamp; used to sort recently changed trips.   |
+
 ### Item Activity Assignments
 
 The current local model stores activity assignments directly on each item as `activityIds`.
@@ -138,6 +174,9 @@ Example:
 
 Mandatory items are also included, even when they are not assigned to the selected activity.
 
+When a saved trip is active, the selected activities and packed/unpacked state are stored on that
+trip. When no saved trip is active, the Pack screen behaves as a temporary current pack.
+
 ## Current Implementation
 
 The repository currently includes:
@@ -148,6 +187,7 @@ The repository currently includes:
 - A Library screen at `/library`.
 - A Settings screen at `/settings`.
 - A bottom navigation shell with Pack, Library, and Settings wired.
+- Saved trips on the Pack screen with create, open, edit, delete, and last active trip persistence.
 - Item categories shown as groups in the packing checklist.
 - Activity and item creation from the Pack screen.
 - Activity creation, editing, and deletion from Library.
@@ -162,11 +202,11 @@ The repository currently includes:
 - Angular ESLint configured for the client and available through the root `pnpm lint` command.
 - Item and activity repository services with create, update, delete, refresh, loading, and error state.
 - Activity deletion removes that activity reference from existing items.
-- Shared framework-independent `Activity`, `Item`, and item category TypeScript definitions.
+- Activity and item deletion clean up saved trip references where needed.
+- Shared framework-independent `Activity`, `Item`, `Trip`, and item category TypeScript definitions.
 
 Not implemented yet:
 
-- Persisted packed/unpacked checklist state.
 - Advanced filtering inside Library beyond item search.
 - Tests.
 
@@ -179,6 +219,7 @@ Not implemented yet:
 5. The user selects one or more activities.
 6. The app generates the list of items to bring.
 7. The user uses the generated list as a checklist.
+8. The user can save that preparation as a trip, reopen it later, and continue with its own checked item state.
 
 ## Layout and Flow Notes
 
@@ -192,6 +233,11 @@ The Pack screen should expose the packing workflow directly. Selecting activitie
 checklist immediately; there should be no separate "generate list" step. Activities are shown as
 compact selectable tiles with a final create tile, and checklist rows support packed/unpacked
 interaction.
+
+Trips live inside the Pack screen rather than as a separate destination. The current pack remains a
+temporary scratchpad, while saved trips persist selected activities and packed item state. The last
+active trip is remembered locally so reopening the app returns the user to the preparation they were
+working on.
 
 Library keeps catalog management one tap away from Pack. Items and activities can be switched
 within the Library screen, and create/edit flows use focused dialogs.
@@ -212,6 +258,7 @@ The first useful version should focus on:
 - Filtering items by selected activities
 - Generating a packing checklist
 - Marking generated list entries as packed
+- Saving and reopening trip-specific packing sessions
 - Persisting user data locally
 
 Implemented MVP pieces:
@@ -220,12 +267,13 @@ Implemented MVP pieces:
 - Activity CRUD through Library and quick activity creation from Pack.
 - Activity assignment for items.
 - Live checklist generation from selected activities.
-- Local IndexedDB persistence for activities and items.
+- Saved trips with independent selected activities and packed item state.
+- Last active trip persistence in local storage.
+- Local IndexedDB persistence for activities, items, and trips.
 - Settings import/export for local JSON backups.
 
 Remaining MVP pieces:
 
-- Persist packed/unpacked state if that behavior should survive reloads.
 - Continue refining first-run and empty states as workflows grow.
 
 Quality notes:
@@ -238,7 +286,7 @@ Quality notes:
 
 These ideas are intentionally outside the first MVP unless explicitly prioritized:
 
-- Saved custom packing lists
+- Trip duplication or reusable trip templates
 - Predefined starter lists
 - PDF export
 - Weight totals

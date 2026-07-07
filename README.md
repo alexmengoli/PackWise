@@ -2,7 +2,7 @@
 
 PackWise is an offline-first packing organizer for building activity-based packing checklists.
 Users can keep a local library of items, associate items with activities such as camping or beach
-trips, and select activities to see what to bring.
+trips, select activities to see what to bring, and save trip-specific packing sessions.
 
 The core app is intentionally local-first. It must remain usable without an account, cloud sync, or
 network access.

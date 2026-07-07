@@ -5,6 +5,64 @@
       <p class="home-page__subtitle">Pick one or more activities and your packing list updates instantly.</p>
     </header>
 
+    <section class="trip-bar" aria-label="Trip">
+      <div class="trip-bar__current">
+        <span class="trip-bar__icon-wrap">
+          <mat-icon aria-hidden="true">{{ activeTrip() ? 'luggage' : 'backpack' }}</mat-icon>
+        </span>
+        <span class="trip-bar__body">
+          <span class="trip-bar__label">{{ activeTrip() ? 'Saved trip' : 'Current pack' }}</span>
+          <span class="trip-bar__name">{{ activeTrip()?.name ?? 'Current pack' }}</span>
+        </span>
+      </div>
+
+      <div class="trip-bar__actions">
+        @if (activeTrip(); as trip) {
+          <button mat-button type="button" (click)="closeTrip()">
+            <mat-icon aria-hidden="true">close</mat-icon>
+            Current pack
+          </button>
+          <button mat-icon-button type="button" aria-label="Edit trip" title="Edit trip" (click)="editTrip(trip)">
+            <mat-icon aria-hidden="true">edit</mat-icon>
+          </button>
+          <button mat-icon-button type="button" aria-label="Delete trip" title="Delete trip" (click)="deleteTrip(trip)">
+            <mat-icon aria-hidden="true">delete</mat-icon>
+          </button>
+        } @else {
+          <button mat-flat-button type="button" (click)="saveCurrentTrip()">
+            <mat-icon aria-hidden="true">save</mat-icon>
+            Save trip
+          </button>
+        }
+
+        <button
+          mat-icon-button
+          type="button"
+          aria-label="Open saved trip"
+          title="Open saved trip"
+          [matMenuTriggerFor]="tripMenu"
+        >
+          <mat-icon aria-hidden="true">folder_open</mat-icon>
+        </button>
+      </div>
+    </section>
+
+    <mat-menu #tripMenu="matMenu">
+      @if (trips().length === 0) {
+        <button mat-menu-item type="button" disabled>
+          <mat-icon aria-hidden="true">luggage</mat-icon>
+          <span>No saved trips</span>
+        </button>
+      } @else {
+        @for (trip of trips(); track trip.id) {
+          <button mat-menu-item type="button" (click)="openTrip(trip)">
+            <mat-icon aria-hidden="true">luggage</mat-icon>
+            <span>{{ trip.name }}</span>
+          </button>
+        }
+      }
+    </mat-menu>
+
     <div class="home-page__columns">
       <mat-card appearance="outlined" class="home-section home-section--activities">
         <mat-card-content>
@@ -105,12 +163,17 @@
           } @else if (selectedActivityIds().length === 0) {
             <div class="home-page__empty">
               <mat-icon aria-hidden="true">checklist</mat-icon>
-              <p>Select one or more activities to see what to bring.</p>
+              <p>Select one or more activities to see what to bring, or open a saved trip.</p>
 
               @if (activities().length === 0) {
                 <button mat-stroked-button type="button" (click)="createActivity()">
                   <mat-icon aria-hidden="true">add</mat-icon>
                   Create activity
+                </button>
+              } @else if (trips().length > 0) {
+                <button mat-stroked-button type="button" [matMenuTriggerFor]="tripMenu">
+                  <mat-icon aria-hidden="true">folder_open</mat-icon>
+                  Open trip
                 </button>
               }
             </div>

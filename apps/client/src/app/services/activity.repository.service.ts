@@ -8,12 +8,14 @@ import type {
 import { createLocalId } from '../utils/local-id';
 import { IndexedDbPackwiseStorageAdapterService } from './indexed-db-packwise-storage.adapter.service';
 import { ItemRepositoryService } from './item.repository.service';
+import { TripRepositoryService } from './trip.repository.service';
 
 @Injectable({ providedIn: 'root' })
 export class ActivityRepositoryService {
   // injections
   private readonly storage = inject(IndexedDbPackwiseStorageAdapterService);
   private readonly itemRepository = inject(ItemRepositoryService);
+  private readonly tripRepository = inject(TripRepositoryService);
 
   // state
   private readonly activitiesSignal: WritableSignal<Activity[]> = signal<Activity[]>([]);
@@ -116,6 +118,7 @@ export class ActivityRepositoryService {
     await this.storage.saveSnapshot(updatedSnapshot);
     this.activitiesSignal.set(sortActivities(updatedSnapshot.activities));
     await this.itemRepository.refresh();
+    await this.tripRepository.removeActivityReference(id);
   }
 }
 

@@ -22,7 +22,7 @@ export class IndexedDbPackwiseStorageAdapterService {
     const storedSnapshot: PackwiseDataSnapshot | undefined = await this.getSnapshot(database);
 
     if (storedSnapshot) {
-      return storedSnapshot;
+      return normalizeSnapshot(storedSnapshot);
     }
 
     const legacySnapshot: PackwiseDataSnapshot | undefined =
@@ -43,9 +43,10 @@ export class IndexedDbPackwiseStorageAdapterService {
   public async saveSnapshot(snapshot: PackwiseDataSnapshot): Promise<void> {
     const database: IDBDatabase = await this.openDatabase();
     const store: IDBObjectStore = this.getObjectStore(database, SNAPSHOTS_STORE, 'readwrite');
+    const normalizedSnapshot: PackwiseDataSnapshot = normalizeSnapshot(snapshot);
 
     await new Promise<void>((resolve: () => void, reject: (reason?: unknown) => void) => {
-      const request: IDBRequest<IDBValidKey> = store.put(snapshot);
+      const request: IDBRequest<IDBValidKey> = store.put(normalizedSnapshot);
 
       request.onsuccess = (): void => resolve();
       request.onerror = (): void => reject(request.error);
@@ -110,6 +111,7 @@ export class IndexedDbPackwiseStorageAdapterService {
       version: SNAPSHOT_VERSION,
       activities,
       items,
+      trips: [],
     };
   }
 
@@ -140,6 +142,14 @@ export class IndexedDbPackwiseStorageAdapterService {
       version: SNAPSHOT_VERSION,
       activities: [],
       items: [],
+      trips: [],
     };
   }
+}
+
+function normalizeSnapshot(snapshot: PackwiseDataSnapshot): PackwiseDataSnapshot {
+  return {
+    ...snapshot,
+    trips: snapshot.trips ?? [],
+  };
 }
