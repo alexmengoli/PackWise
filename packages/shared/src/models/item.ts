@@ -33,9 +33,6 @@ export interface Item {
   name: string;
   description?: string;
   categoryId?: ItemCategoryId;
-  weight?: string;
-  size?: string;
-  notes?: string;
   mandatory: boolean;
   activityIds: string[];
   createdAt: string;

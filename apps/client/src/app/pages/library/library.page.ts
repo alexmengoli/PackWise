@@ -287,9 +287,6 @@ export class LibraryPage {
       item.description ?? '',
       item.categoryId ?? '',
       this.categoryName(item) ?? '',
-      item.weight ?? '',
-      item.size ?? '',
-      item.notes ?? '',
     ];
 
     return fields.some((field: string): boolean => normalizeSearchTerm(field).includes(searchTerm));

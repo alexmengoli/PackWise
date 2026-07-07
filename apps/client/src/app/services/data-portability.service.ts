@@ -104,9 +104,6 @@ function isItem(data: unknown): data is Item {
     typeof data['name'] === 'string' &&
     isOptionalString(data['description']) &&
     isOptionalString(data['categoryId']) &&
-    isOptionalString(data['weight']) &&
-    isOptionalString(data['size']) &&
-    isOptionalString(data['notes']) &&
     typeof data['mandatory'] === 'boolean' &&
     Array.isArray(data['activityIds']) &&
     data['activityIds'].every((activityId: unknown): activityId is string => typeof activityId === 'string') &&

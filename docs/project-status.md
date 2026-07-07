@@ -36,8 +36,7 @@ Example:
   "description": "SPF 50 protection",
   "categoryId": "toiletries",
   "mandatory": false,
-  "activityIds": ["activity-beach"],
-  "notes": "Check the expiration date"
+  "activityIds": ["activity-beach"]
 }
 ```
 
@@ -98,9 +97,6 @@ Represents a physical item that can be included in one or more packing lists.
 | `categoryId`  | string        | No       | Optional item category, such as Clothes or Toiletries.  |
 | `mandatory`   | boolean       | Yes      | Whether the item appears for every selected activity.   |
 | `activityIds` | string[]      | Yes      | Activities this item belongs to.                        |
-| `weight`      | string        | No       | Item weight or weight note.                             |
-| `size`        | string        | No       | Item size or dimensions, for example `30 x 20 x 10 cm`. |
-| `notes`       | string        | No       | Additional notes about the item.                        |
 | `created_at`  | datetime      | Yes      | Creation timestamp.                                     |
 | `updated_at`  | datetime      | Yes      | Last update timestamp.                                  |
 
@@ -158,7 +154,7 @@ The repository currently includes:
 - Item creation, editing, and deletion from Library.
 - Item search in Library.
 - Activity dialogs with name, description, icon, and hue-based color selection.
-- Item dialogs with name, description, category, mandatory flag, activity assignments, notes, size, and weight.
+- Item dialogs with name, description, category, mandatory flag, and activity assignments.
 - Settings data operations for exporting JSON, importing JSON, and deleting all local data.
 - A disabled future Cloud Sync entry point in Settings.
 - Local IndexedDB persistence through `IndexedDbPackwiseStorageAdapterService`.

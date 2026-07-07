@@ -32,35 +32,10 @@
       }
     </section>
 
-    <mat-expansion-panel class="details-form__other-panel" [expanded]="otherPanelExpanded">
-      <mat-expansion-panel-header>
-        <mat-panel-title>Other</mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <div class="details-form__other-content">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <mat-label>Category</mat-label>
-          <input matInput formControlName="categoryId" autocomplete="off" />
-        </mat-form-field>
-
-        <div class="details-form__grid">
-          <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Weight</mat-label>
-            <input matInput formControlName="weight" autocomplete="off" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Size</mat-label>
-            <input matInput formControlName="size" autocomplete="off" />
-          </mat-form-field>
-        </div>
-
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <mat-label>Notes</mat-label>
-          <textarea matInput formControlName="notes" rows="3"></textarea>
-        </mat-form-field>
-      </div>
-    </mat-expansion-panel>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Category</mat-label>
+      <input matInput formControlName="categoryId" autocomplete="off" />
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 

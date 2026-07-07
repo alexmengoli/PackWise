@@ -3,7 +3,6 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -20,7 +19,6 @@ import type { ItemDetailsDialogData, ItemDetailsDialogResult } from './item-deta
     MatButtonModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -42,16 +40,12 @@ export class ItemDetailsDialogComponent {
   // data
   protected readonly activities = computed(() => this.data.activities);
   protected readonly isEditing: boolean = Boolean(this.data.item);
-  protected readonly otherPanelExpanded: boolean = hasOtherDetails(this.data.item);
   protected readonly form = this.formBuilder.group({
     name: [this.data.item?.name ?? '', [Validators.required]],
     description: [this.data.item?.description ?? ''],
     categoryId: [this.data.item?.categoryId ?? ''],
     mandatory: [this.data.item?.mandatory ?? false],
     activityIds: [this.data.item?.activityIds ?? this.data.activityIds ?? []],
-    notes: [this.data.item?.notes ?? ''],
-    size: [this.data.item?.size ?? ''],
-    weight: [this.data.item?.weight ?? ''],
   });
 
   protected cancel(): void {
@@ -72,9 +66,6 @@ export class ItemDetailsDialogComponent {
       categoryId: optionalTrim(value.categoryId),
       mandatory: value.mandatory,
       activityIds: value.mandatory ? [] : value.activityIds,
-      notes: optionalTrim(value.notes),
-      size: optionalTrim(value.size),
-      weight: optionalTrim(value.weight),
     };
     const duplicateItem: Item | undefined = this.data.findDuplicateItem?.(input.name, this.data.item?.id);
 
@@ -105,8 +96,4 @@ function optionalTrim(value: string): string | undefined {
   const trimmedValue: string = value.trim();
 
   return trimmedValue.length > 0 ? trimmedValue : undefined;
-}
-
-function hasOtherDetails(item: Item | undefined): boolean {
-  return Boolean(item?.categoryId || item?.weight || item?.size || item?.notes);
 }
