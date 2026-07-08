@@ -1,0 +1,656 @@
+{
+  "app": "packwise",
+  "version": 1,
+  "exportedAt": "2026-07-08T17:47:34.623Z",
+  "data": {
+    "id": "local",
+    "version": 1,
+    "activities": [
+      {
+        "id": "act-beach-day",
+        "name": "Beach day",
+        "notes": "Sun, swimming, and a comfortable day bag.",
+        "color": "hsl(188 82% 32%)",
+        "icon": "beach_access",
+        "createdAt": "2026-07-01T08:02:00.000Z",
+        "updatedAt": "2026-07-01T08:02:00.000Z"
+      },
+      {
+        "id": "act-camping",
+        "name": "Camping",
+        "notes": "Overnight kit for sleeping outside.",
+        "color": "hsl(132 58% 30%)",
+        "icon": "forest",
+        "createdAt": "2026-07-01T08:04:00.000Z",
+        "updatedAt": "2026-07-01T08:04:00.000Z"
+      },
+      {
+        "id": "act-city-weekend",
+        "name": "City weekend",
+        "notes": "Light travel for two or three days away.",
+        "color": "hsl(204 78% 36%)",
+        "icon": "location_city",
+        "createdAt": "2026-07-01T08:00:00.000Z",
+        "updatedAt": "2026-07-01T08:00:00.000Z"
+      },
+      {
+        "id": "act-cycling",
+        "name": "Cycling",
+        "notes": "Ride kit, repairs, and weather layers.",
+        "color": "hsl(8 78% 40%)",
+        "icon": "directions_bike",
+        "createdAt": "2026-07-01T08:10:00.000Z",
+        "updatedAt": "2026-07-01T08:10:00.000Z"
+      },
+      {
+        "id": "act-hiking",
+        "name": "Hiking",
+        "notes": "Trail essentials for longer walks.",
+        "color": "hsl(40 88% 36%)",
+        "icon": "hiking",
+        "createdAt": "2026-07-01T08:06:00.000Z",
+        "updatedAt": "2026-07-01T08:06:00.000Z"
+      },
+      {
+        "id": "act-rainy-weather",
+        "name": "Rainy weather",
+        "notes": "Dry layers and waterproof backups.",
+        "color": "hsl(218 88% 31%)",
+        "icon": "beach_access",
+        "createdAt": "2026-07-01T08:14:00.000Z",
+        "updatedAt": "2026-07-08T17:45:33.990Z"
+      },
+      {
+        "id": "act-kids",
+        "name": "With kids",
+        "notes": "Extras that make family travel smoother.",
+        "color": "hsl(316 62% 38%)",
+        "icon": "family_restroom",
+        "createdAt": "2026-07-01T08:12:00.000Z",
+        "updatedAt": "2026-07-01T08:12:00.000Z"
+      },
+      {
+        "id": "act-work-trip",
+        "name": "Work trip",
+        "notes": "Meetings, laptop gear, and travel documents.",
+        "color": "hsl(260 46% 44%)",
+        "icon": "business_center",
+        "createdAt": "2026-07-01T08:08:00.000Z",
+        "updatedAt": "2026-07-01T08:08:00.000Z"
+      }
+    ],
+    "items": [
+      {
+        "id": "item-phone",
+        "name": "Phone",
+        "notes": "Fully charged before leaving.",
+        "categoryId": "electronics",
+        "mandatory": true,
+        "activityIds": [],
+        "createdAt": "2026-07-01T09:00:00.000Z",
+        "updatedAt": "2026-07-01T09:00:00.000Z"
+      },
+      {
+        "id": "item-wallet",
+        "name": "Wallet",
+        "notes": "Cash, cards, transit pass.",
+        "categoryId": "documents",
+        "mandatory": true,
+        "activityIds": [],
+        "createdAt": "2026-07-01T09:01:00.000Z",
+        "updatedAt": "2026-07-01T09:01:00.000Z"
+      },
+      {
+        "id": "item-house-keys",
+        "name": "House keys",
+        "categoryId": "tools",
+        "mandatory": true,
+        "activityIds": [],
+        "createdAt": "2026-07-01T09:02:00.000Z",
+        "updatedAt": "2026-07-01T09:02:00.000Z"
+      },
+      {
+        "id": "item-medication",
+        "name": "Personal medication",
+        "notes": "Daily doses plus one spare day.",
+        "categoryId": "toiletries",
+        "mandatory": true,
+        "activityIds": [],
+        "createdAt": "2026-07-01T09:03:00.000Z",
+        "updatedAt": "2026-07-01T09:03:00.000Z"
+      },
+      {
+        "id": "item-usb-c-charger",
+        "name": "USB-C charger",
+        "notes": "One compact charger for phone and laptop.",
+        "categoryId": "electronics",
+        "mandatory": true,
+        "activityIds": [],
+        "createdAt": "2026-07-01T09:04:00.000Z",
+        "updatedAt": "2026-07-01T09:04:00.000Z"
+      },
+      {
+        "id": "item-underwear",
+        "name": "Underwear",
+        "notes": "One pair per day plus one extra.",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-camping",
+          "act-work-trip"
+        ],
+        "createdAt": "2026-07-01T09:05:00.000Z",
+        "updatedAt": "2026-07-01T09:05:00.000Z"
+      },
+      {
+        "id": "item-socks",
+        "name": "Socks",
+        "notes": "Pack a dry backup pair.",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-camping",
+          "act-hiking",
+          "act-work-trip",
+          "act-rainy-weather"
+        ],
+        "createdAt": "2026-07-01T09:06:00.000Z",
+        "updatedAt": "2026-07-01T09:06:00.000Z"
+      },
+      {
+        "id": "item-light-jacket",
+        "name": "Light jacket",
+        "notes": "Evening layer.",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-hiking",
+          "act-work-trip",
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:07:00.000Z",
+        "updatedAt": "2026-07-01T09:07:00.000Z"
+      },
+      {
+        "id": "item-rain-shell",
+        "name": "Rain shell",
+        "notes": "Waterproof outer layer.",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-hiking",
+          "act-cycling",
+          "act-rainy-weather"
+        ],
+        "createdAt": "2026-07-01T09:08:00.000Z",
+        "updatedAt": "2026-07-01T09:08:00.000Z"
+      },
+      {
+        "id": "item-comfortable-shoes",
+        "name": "Comfortable shoes",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-work-trip",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:09:00.000Z",
+        "updatedAt": "2026-07-01T09:09:00.000Z"
+      },
+      {
+        "id": "item-sunscreen",
+        "name": "Sunscreen SPF 50",
+        "notes": "Reapply after swimming or sweating.",
+        "categoryId": "toiletries",
+        "mandatory": false,
+        "activityIds": [
+          "act-beach-day",
+          "act-hiking",
+          "act-cycling",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:10:00.000Z",
+        "updatedAt": "2026-07-01T09:10:00.000Z"
+      },
+      {
+        "id": "item-swimsuit",
+        "name": "Swimsuit",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-beach-day",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:11:00.000Z",
+        "updatedAt": "2026-07-01T09:11:00.000Z"
+      },
+      {
+        "id": "item-beach-towel",
+        "name": "Beach towel",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-beach-day",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:12:00.000Z",
+        "updatedAt": "2026-07-01T09:12:00.000Z"
+      },
+      {
+        "id": "item-water-bottle",
+        "name": "Water bottle",
+        "notes": "Refill before heading out.",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-beach-day",
+          "act-camping",
+          "act-hiking",
+          "act-cycling",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:13:00.000Z",
+        "updatedAt": "2026-07-01T09:13:00.000Z"
+      },
+      {
+        "id": "item-snacks",
+        "name": "Snacks",
+        "notes": "Easy food for delays or low energy.",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-beach-day",
+          "act-camping",
+          "act-hiking",
+          "act-cycling",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:14:00.000Z",
+        "updatedAt": "2026-07-01T09:14:00.000Z"
+      },
+      {
+        "id": "item-tent",
+        "name": "Tent",
+        "notes": "Check poles and stakes.",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-camping"
+        ],
+        "createdAt": "2026-07-01T09:15:00.000Z",
+        "updatedAt": "2026-07-01T09:15:00.000Z"
+      },
+      {
+        "id": "item-sleeping-bag",
+        "name": "Sleeping bag",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-camping"
+        ],
+        "createdAt": "2026-07-01T09:16:00.000Z",
+        "updatedAt": "2026-07-01T09:16:00.000Z"
+      },
+      {
+        "id": "item-headlamp",
+        "name": "Headlamp",
+        "notes": "Fresh batteries packed separately.",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-camping",
+          "act-hiking"
+        ],
+        "createdAt": "2026-07-01T09:17:00.000Z",
+        "updatedAt": "2026-07-01T09:17:00.000Z"
+      },
+      {
+        "id": "item-multitool",
+        "name": "Multitool",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-camping",
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:18:00.000Z",
+        "updatedAt": "2026-07-01T09:18:00.000Z"
+      },
+      {
+        "id": "item-first-aid",
+        "name": "First aid kit",
+        "notes": "Blister pads, disinfectant, bandages.",
+        "categoryId": "toiletries",
+        "mandatory": false,
+        "activityIds": [
+          "act-camping",
+          "act-hiking",
+          "act-cycling",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:19:00.000Z",
+        "updatedAt": "2026-07-01T09:19:00.000Z"
+      },
+      {
+        "id": "item-hiking-boots",
+        "name": "Hiking boots",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-hiking",
+          "act-camping"
+        ],
+        "createdAt": "2026-07-01T09:20:00.000Z",
+        "updatedAt": "2026-07-01T09:20:00.000Z"
+      },
+      {
+        "id": "item-map",
+        "name": "Offline map",
+        "notes": "Downloaded map plus saved route.",
+        "categoryId": "documents",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-hiking",
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:21:00.000Z",
+        "updatedAt": "2026-07-01T09:21:00.000Z"
+      },
+      {
+        "id": "item-laptop",
+        "name": "Laptop",
+        "categoryId": "electronics",
+        "mandatory": false,
+        "activityIds": [
+          "act-work-trip"
+        ],
+        "createdAt": "2026-07-01T09:22:00.000Z",
+        "updatedAt": "2026-07-01T09:22:00.000Z"
+      },
+      {
+        "id": "item-laptop-charger",
+        "name": "Laptop charger",
+        "categoryId": "electronics",
+        "mandatory": false,
+        "activityIds": [
+          "act-work-trip"
+        ],
+        "createdAt": "2026-07-01T09:23:00.000Z",
+        "updatedAt": "2026-07-01T09:23:00.000Z"
+      },
+      {
+        "id": "item-notebook",
+        "name": "Notebook and pen",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-work-trip",
+          "act-city-weekend"
+        ],
+        "createdAt": "2026-07-01T09:24:00.000Z",
+        "updatedAt": "2026-07-01T09:24:00.000Z"
+      },
+      {
+        "id": "item-passport",
+        "name": "Passport or ID",
+        "notes": "Check expiration date before travel.",
+        "categoryId": "documents",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-work-trip"
+        ],
+        "createdAt": "2026-07-01T09:25:00.000Z",
+        "updatedAt": "2026-07-01T09:25:00.000Z"
+      },
+      {
+        "id": "item-travel-insurance",
+        "name": "Travel insurance PDF",
+        "notes": "Available offline on phone.",
+        "categoryId": "documents",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-work-trip"
+        ],
+        "createdAt": "2026-07-01T09:26:00.000Z",
+        "updatedAt": "2026-07-01T09:26:00.000Z"
+      },
+      {
+        "id": "item-cycling-helmet",
+        "name": "Cycling helmet",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:27:00.000Z",
+        "updatedAt": "2026-07-01T09:27:00.000Z"
+      },
+      {
+        "id": "item-bike-lock",
+        "name": "Bike lock",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-cycling",
+          "act-city-weekend"
+        ],
+        "createdAt": "2026-07-01T09:28:00.000Z",
+        "updatedAt": "2026-07-01T09:28:00.000Z"
+      },
+      {
+        "id": "item-tire-levers",
+        "name": "Tire levers and spare tube",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:29:00.000Z",
+        "updatedAt": "2026-07-01T09:29:00.000Z"
+      },
+      {
+        "id": "item-kids-change",
+        "name": "Kids change of clothes",
+        "notes": "Packed in an easy-access pouch.",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-kids",
+          "act-beach-day"
+        ],
+        "createdAt": "2026-07-01T09:30:00.000Z",
+        "updatedAt": "2026-07-01T09:30:00.000Z"
+      },
+      {
+        "id": "item-small-toy",
+        "name": "Small toy or book",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-kids",
+          "act-city-weekend"
+        ],
+        "createdAt": "2026-07-01T09:31:00.000Z",
+        "updatedAt": "2026-07-01T09:31:00.000Z"
+      },
+      {
+        "id": "item-wet-bag",
+        "name": "Wet bag",
+        "notes": "For swimsuits, muddy socks, or spills.",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-kids",
+          "act-beach-day",
+          "act-rainy-weather"
+        ],
+        "createdAt": "2026-07-01T09:32:00.000Z",
+        "updatedAt": "2026-07-01T09:32:00.000Z"
+      },
+      {
+        "id": "item-umbrella",
+        "name": "Compact umbrella",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-work-trip",
+          "act-rainy-weather"
+        ],
+        "createdAt": "2026-07-01T09:33:00.000Z",
+        "updatedAt": "2026-07-01T09:33:00.000Z"
+      },
+      {
+        "id": "item-waterproof-pouch",
+        "name": "Waterproof pouch",
+        "notes": "Protect phone and documents.",
+        "categoryId": "tools",
+        "mandatory": false,
+        "activityIds": [
+          "act-beach-day",
+          "act-rainy-weather",
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:34:00.000Z",
+        "updatedAt": "2026-07-01T09:34:00.000Z"
+      },
+      {
+        "id": "item-toothbrush",
+        "name": "Toothbrush",
+        "categoryId": "toiletries",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-camping",
+          "act-work-trip"
+        ],
+        "createdAt": "2026-07-01T09:35:00.000Z",
+        "updatedAt": "2026-07-01T09:35:00.000Z"
+      },
+      {
+        "id": "item-deodorant",
+        "name": "Deodorant",
+        "categoryId": "toiletries",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-camping",
+          "act-work-trip",
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:36:00.000Z",
+        "updatedAt": "2026-07-01T09:36:00.000Z"
+      },
+      {
+        "id": "item-power-bank",
+        "name": "Power bank",
+        "notes": "Charged the night before.",
+        "categoryId": "electronics",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-beach-day",
+          "act-camping",
+          "act-hiking",
+          "act-cycling",
+          "act-kids"
+        ],
+        "createdAt": "2026-07-01T09:37:00.000Z",
+        "updatedAt": "2026-07-01T09:37:00.000Z"
+      },
+      {
+        "id": "item-sunglasses",
+        "name": "Sunglasses",
+        "categoryId": "clothes",
+        "mandatory": false,
+        "activityIds": [
+          "act-city-weekend",
+          "act-beach-day",
+          "act-hiking",
+          "act-cycling"
+        ],
+        "createdAt": "2026-07-01T09:38:00.000Z",
+        "updatedAt": "2026-07-01T09:38:00.000Z"
+      }
+    ],
+    "trips": [
+      {
+        "id": "trip-lake-weekend",
+        "name": "Lake weekend",
+        "notes": "Camping, hiking, and beach time with the kids.",
+        "activityIds": [
+          "act-camping",
+          "act-hiking",
+          "act-beach-day",
+          "act-kids",
+          "act-rainy-weather"
+        ],
+        "packedItemIds": [
+          "item-phone",
+          "item-wallet",
+          "item-house-keys",
+          "item-usb-c-charger",
+          "item-sunscreen",
+          "item-water-bottle",
+          "item-snacks",
+          "item-first-aid",
+          "item-swimsuit",
+          "item-beach-towel",
+          "item-comfortable-shoes",
+          "item-light-jacket",
+          "item-rain-shell"
+        ],
+        "createdAt": "2026-07-06T18:00:00.000Z",
+        "updatedAt": "2026-07-08T17:41:14.321Z"
+      },
+      {
+        "id": "trip-berlin-client-visit",
+        "name": "Berlin client visit",
+        "notes": "Two workdays, carry-on only.",
+        "activityIds": [
+          "act-work-trip",
+          "act-city-weekend",
+          "act-rainy-weather"
+        ],
+        "packedItemIds": [
+          "item-phone",
+          "item-wallet",
+          "item-house-keys",
+          "item-usb-c-charger",
+          "item-laptop",
+          "item-laptop-charger",
+          "item-passport",
+          "item-travel-insurance"
+        ],
+        "createdAt": "2026-07-05T12:00:00.000Z",
+        "updatedAt": "2026-07-08T10:45:00.000Z"
+      },
+      {
+        "id": "trip-sunday-ride",
+        "name": "Sunday ride",
+        "notes": "Early cycling route with possible rain.",
+        "activityIds": [
+          "act-cycling",
+          "act-rainy-weather"
+        ],
+        "packedItemIds": [
+          "item-phone",
+          "item-wallet",
+          "item-house-keys",
+          "item-water-bottle",
+          "item-cycling-helmet",
+          "item-tire-levers"
+        ],
+        "createdAt": "2026-07-04T07:30:00.000Z",
+        "updatedAt": "2026-07-07T19:00:00.000Z"
+      }
+    ]
+  }
+}
