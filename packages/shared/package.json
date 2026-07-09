@@ -1,7 +1,7 @@
 {
   "name": "@packwise/shared",
   "version": "0.1.0",
-  "description": "Shared TypeScript models and domain utilities for PackWise.",
+  "description": "Shared TypeScript models and domain utilities for Packwise.",
   "private": true,
   "packageManager": "pnpm@10.33.0",
   "type": "module",

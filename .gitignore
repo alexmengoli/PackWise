@@ -13,6 +13,8 @@ coverage/
 # Native/mobile generated output
 platforms/
 plugins/
+.android-sdk/
+.gradle-cache/
 
 # Logs
 *.log

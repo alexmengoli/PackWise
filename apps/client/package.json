@@ -19,6 +19,8 @@
     "@angular/material": "^22.0.3",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
     "@packwise/shared": "workspace:*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -27,6 +29,7 @@
     "@angular/build": "^22.0.5",
     "@angular/cli": "^22.0.5",
     "@angular/compiler-cli": "^22.0.0",
+    "@capacitor/cli": "^8.4.1",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4.1.12",
     "angular-eslint": "^22.0.0",

@@ -1,6 +1,6 @@
-# PackWise Project Status
+# Packwise Project Status
 
-PackWise is an offline-first packing organizer for people who want to prepare bags, backpacks, or gear kits based on the activity they are about to do.
+Packwise is an offline-first packing organizer for people who want to prepare bags, backpacks, or gear kits based on the activity they are about to do.
 
 Users can define their own items, group them by one or more activities, generate a packing checklist by selecting the relevant activities, and save trip-specific packing sessions. The core app should remain usable without an account, network access, or cloud sync.
 
@@ -85,7 +85,7 @@ The storage adapter can migrate older separate `activities` and `items` object s
 snapshot format when found. Older snapshots that do not include `trips` are normalized with an
 empty trips array.
 
-Exports wrap that snapshot in a small PackWise JSON envelope:
+Exports wrap that snapshot in a small Packwise JSON envelope:
 
 ```json
 {
@@ -223,7 +223,7 @@ Not implemented yet:
 
 ## Layout and Flow Notes
 
-PackWise uses a mobile-first three-destination shell:
+Packwise uses a mobile-first three-destination shell:
 
 - Pack at `/` is the default workspace for selecting activities and seeing the live checklist.
 - Library at `/library` contains item and activity management.
