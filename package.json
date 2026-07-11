@@ -1,6 +1,6 @@
 {
   "name": "packwise",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Open-source, offline-first packing list and gear organizer with optional cloud sync.",
   "private": true,
   "author": "Alex Mengoli (MxApps)",
@@ -9,6 +9,7 @@
   "scripts": {
     "start": "pnpm --filter @packwise/client start",
     "build": "pnpm --filter @packwise/shared build && pnpm --filter @packwise/client build",
+    "build:pages": "pnpm --filter @packwise/shared build && pnpm --filter @packwise/client build --base-href /PackWise/",
     "lint": "pnpm --filter @packwise/client lint",
     "build:shared": "pnpm --filter @packwise/shared build",
     "android:icons": "powershell -ExecutionPolicy Bypass -File ./scripts/android-generate-icons.ps1",

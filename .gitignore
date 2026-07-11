@@ -28,6 +28,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Signing keys
+*.jks
+*.keystore
+
 # Editors
 .idea/
 .vscode/*

@@ -1,0 +1,102 @@
+name: Release Android APK
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Read and validate version
+        id: version
+        shell: bash
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          tag_version="${GITHUB_REF_NAME#v}"
+
+          if [[ ! "$tag_version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Tag must use the vMAJOR.MINOR.PATCH format."
+            exit 1
+          fi
+          major="${BASH_REMATCH[1]}"
+          minor="${BASH_REMATCH[2]}"
+          patch="${BASH_REMATCH[3]}"
+
+          if [[ "$package_version" != "$tag_version" ]]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $package_version."
+            exit 1
+          fi
+
+          version_code=$((10#$major * 1000000 + 10#$minor * 1000 + 10#$patch))
+          echo "name=$tag_version" >> "$GITHUB_OUTPUT"
+          echo "code=$version_code" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web application
+        run: pnpm build
+
+      - name: Sync Capacitor Android project
+        working-directory: apps/client
+        run: pnpm exec cap sync android
+
+      - name: Restore signing keystore
+        shell: bash
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          [[ -n "$ANDROID_KEYSTORE_BASE64" ]] || { echo "ANDROID_KEYSTORE_BASE64 is not configured."; exit 1; }
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/packwise-release.jks"
+
+      - name: Build signed release APK
+        working-directory: apps/client/android
+        env:
+          PACKWISE_VERSION_NAME: ${{ steps.version.outputs.name }}
+          PACKWISE_VERSION_CODE: ${{ steps.version.outputs.code }}
+          PACKWISE_KEYSTORE_PATH: ${{ runner.temp }}/packwise-release.jks
+          PACKWISE_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          PACKWISE_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          PACKWISE_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          [[ -n "$PACKWISE_KEYSTORE_PASSWORD" ]] || { echo "ANDROID_KEYSTORE_PASSWORD is not configured."; exit 1; }
+          [[ -n "$PACKWISE_KEY_ALIAS" ]] || { echo "ANDROID_KEY_ALIAS is not configured."; exit 1; }
+          [[ -n "$PACKWISE_KEY_PASSWORD" ]] || { echo "ANDROID_KEY_PASSWORD is not configured."; exit 1; }
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Prepare release files
+        shell: bash
+        run: |
+          mkdir release
+          cp apps/client/android/app/build/outputs/apk/release/app-release.apk "release/packwise-${{ steps.version.outputs.name }}.apk"
+          cd release
+          sha256sum "packwise-${{ steps.version.outputs.name }}.apk" > SHA256SUMS.txt
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" release/* --verify-tag --generate-notes --title "Packwise ${{ steps.version.outputs.name }}"
