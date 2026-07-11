@@ -1,6 +1,6 @@
 {
   "name": "@packwise/client",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
@@ -19,6 +19,7 @@
     "@angular/material": "^22.0.3",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "@angular/service-worker": "22.0.5",
     "@capacitor/android": "^8.4.1",
     "@capacitor/core": "^8.4.1",
     "@packwise/shared": "workspace:*",
