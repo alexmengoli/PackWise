@@ -1,0 +1,267 @@
+<main class="privacy-page">
+  <article class="privacy-document" aria-labelledby="privacy-title">
+    <header class="privacy-hero">
+      <a mat-button class="privacy-hero__back" routerLink="/settings">
+        <mat-icon aria-hidden="true">arrow_back</mat-icon>
+        Settings
+      </a>
+
+      <div class="privacy-hero__heading">
+        <p class="privacy-hero__eyebrow">Packwise legal</p>
+        <h1 id="privacy-title" class="privacy-hero__title">Privacy Policy</h1>
+        <p class="privacy-hero__summary">
+          Packwise is built to keep your packing data on your device. No account, analytics, advertising, or cloud
+          service is required to use the app.
+        </p>
+        <p class="privacy-hero__date"><strong>Effective date:</strong> July 13, 2026</p>
+      </div>
+    </header>
+
+    <mat-card appearance="outlined" class="privacy-highlight">
+      <mat-card-content>
+        <mat-icon aria-hidden="true">shield</mat-icon>
+        <div>
+          <h2>Your data stays local</h2>
+          <p>
+            The packing content you create is stored on your device and is not transmitted to Packwise or MxApps.
+            You choose if and where an exported backup is shared.
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <nav class="privacy-contents" aria-labelledby="contents-title">
+      <h2 id="contents-title">On this page</h2>
+      <ol>
+        <li><a href="#scope">Who this policy covers</a></li>
+        <li><a href="#data">Data handled by Packwise</a></li>
+        <li><a href="#storage">Local storage and device backups</a></li>
+        <li><a href="#transfer">Import, export, and sharing</a></li>
+        <li><a href="#hosting">Web hosting data</a></li>
+        <li><a href="#third-parties">Third parties and disclosure</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#retention">Retention and deletion</a></li>
+        <li><a href="#rights">Your choices and rights</a></li>
+        <li><a href="#children">Children's privacy</a></li>
+        <li><a href="#changes">Changes and contact</a></li>
+      </ol>
+    </nav>
+
+    <div class="privacy-sections">
+      <section id="scope">
+        <h2>1. Who this policy covers</h2>
+        <p>
+          This Privacy Policy explains how Packwise handles information in its web, Progressive Web App, and Android
+          versions. Packwise is developed and published by <strong>Alex Mengoli, operating as MxApps</strong>
+          (collectively, “Packwise,” “MxApps,” “we,” or “us”).
+        </p>
+        <p>
+          This policy covers the current offline-first version of Packwise. Planned account and cloud-sync controls
+          shown in the app are disabled and are not part of the current service. This policy will be updated before
+          those features begin processing data.
+        </p>
+      </section>
+
+      <section id="data">
+        <h2>2. Data handled by Packwise</h2>
+        <h3>Content you create</h3>
+        <p>Packwise lets you create and store:</p>
+        <ul>
+          <li>activity names, notes, colors, and icons;</li>
+          <li>item names, notes, categories, mandatory-item settings, and activity associations;</li>
+          <li>trip names, notes, selected activities, and packed-item status; and</li>
+          <li>locally generated record identifiers and creation or modification timestamps.</li>
+        </ul>
+        <p>
+          This content is not inherently account information, but it may contain personal or sensitive details if you
+          choose to enter them. Please avoid putting information in item, activity, or trip notes that you do not want
+          stored on the device or included in an export.
+        </p>
+
+        <h3>What the app does not collect</h3>
+        <p>
+          The current app does not create user profiles and does not collect or transmit your packing content,
+          identity, email address, precise or approximate location, contacts, photos, camera or microphone data,
+          advertising identifiers, payment information, analytics, diagnostics, or usage history to Packwise or
+          MxApps. It does not use ads, tracking pixels, or third-party analytics SDKs.
+        </p>
+      </section>
+
+      <section id="storage">
+        <h2>3. Local storage and device backups</h2>
+        <p>Packwise uses storage provided by your browser or operating system:</p>
+        <ul>
+          <li><strong>IndexedDB</strong> stores activities, items, trips, notes, and packed-item state.</li>
+          <li>
+            <strong>Local and session storage</strong> remember the active trip and temporary, unsaved checklist
+            selections using locally generated record identifiers.
+          </li>
+          <li>
+            <strong>Service-worker and browser caches</strong> store app files such as code, fonts, and icons so the web
+            app can work offline. Packing content is not intentionally placed in the service-worker asset cache.
+          </li>
+        </ul>
+        <p>
+          Storage is scoped to Packwise by the browser or Android app sandbox. Other people who can access your
+          unlocked device or browser profile may still be able to see your data.
+        </p>
+        <p>
+          On Android, the operating system may include Packwise app data in a device backup when system backup is
+          enabled. Whether this happens, where the backup is stored, and how long it is retained depend on your device,
+          operating-system settings, and backup provider. MxApps does not receive or control those backups.
+        </p>
+      </section>
+
+      <section id="transfer">
+        <h2>4. Import, export, and sharing</h2>
+        <p>
+          Import and export happen only when you request them. An export is a readable JSON file containing your
+          activities, items, trips, notes, associations, packed status, local identifiers, timestamps, and the export
+          time. Treat it like any other personal backup file.
+        </p>
+        <p>
+          In a web browser, Packwise creates a local download. On Android, Packwise writes a temporary copy to the app
+          cache and opens the operating system share sheet. The app you select, the destination you choose, and any
+          storage or communication provider involved will handle the file under their own terms and privacy policy.
+          Packwise does not choose a recipient or upload an export automatically.
+        </p>
+        <p>
+          Import reads only the JSON file you select and replaces the current Packwise database after confirmation.
+          Packwise does not scan unrelated files or request broad access to your device storage.
+        </p>
+      </section>
+
+      <section id="hosting">
+        <h2>5. Web hosting data</h2>
+        <p>
+          The public web version of Packwise is hosted with GitHub Pages. When you visit that version, your browser
+          connects to GitHub to download the app and check for updates. GitHub states that it logs visitors’ IP
+          addresses for security and may process standard request and usage information as an independent service
+          provider. This hosting data is separate from the packing content held in your browser.
+        </p>
+        <p>
+          MxApps does not add analytics or tracking to the hosted app and does not receive your packing database from
+          GitHub Pages. For GitHub’s own practices, see the
+          <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+            >GitHub General Privacy Statement</a
+          >.
+        </p>
+        <p>
+          The installed Android app is packaged with its app files and does not require a Packwise server or account
+          for its core features.
+        </p>
+      </section>
+
+      <section id="third-parties">
+        <h2>6. Third parties and disclosure</h2>
+        <p>
+          Packwise does not sell or rent personal data. It does not share your locally stored packing content with
+          MxApps, advertisers, data brokers, analytics providers, or other third parties.
+        </p>
+        <p>Third parties may process information only in these situations:</p>
+        <ul>
+          <li>GitHub processes technical hosting data when you use the GitHub Pages web version.</li>
+          <li>Your operating system or chosen destination processes an export when you save or share it.</li>
+          <li>Your device backup provider may process app data if device backup is enabled.</li>
+          <li>
+            A service you choose to contact MxApps may process the information you voluntarily provide in your inquiry.
+          </li>
+        </ul>
+        <p>
+          If you contact MxApps, we use the contact details and message you provide to respond, troubleshoot, protect
+          the service, or meet legal obligations. We do not combine support messages with your on-device packing data.
+        </p>
+      </section>
+
+      <section id="security">
+        <h2>7. Security</h2>
+        <p>
+          Packwise reduces privacy risk by keeping its main data store local, avoiding accounts and tracking, using
+          browser and Android app isolation, validating imported files, and serving the hosted web app over HTTPS.
+          However, no device, browser, file, or storage method is completely secure.
+        </p>
+        <p>
+          Packwise does not separately encrypt the local database or exported JSON files. Protect your device with an
+          appropriate screen lock, keep your browser and operating system updated, and store exports only in locations
+          you trust. Anyone who obtains an exported JSON file can read its contents.
+        </p>
+      </section>
+
+      <section id="retention">
+        <h2>8. Retention and deletion</h2>
+        <p>
+          Packing content stays on your device until you edit it, delete individual records, import replacement data,
+          choose <strong>Delete all data</strong> in Settings, clear Packwise site/app storage, or uninstall the app.
+          Temporary session state normally lasts for the current browser tab or session. Cached app files may remain
+          until your browser or operating system clears them.
+        </p>
+        <p>
+          “Delete all data” clears the activities, items, and saved trips in the main local database. Small local state
+          keys may remain until site/app storage is cleared; these contain only locally generated identifiers and no
+          item, activity, trip, or note text. Copies you previously exported, files handled by another app, and system
+          device backups must be deleted through the location or provider where they are stored.
+        </p>
+        <p>
+          Because MxApps does not receive your packing database, we cannot access, recover, or remotely delete it. If
+          you contact us, we retain the inquiry only as long as reasonably necessary to respond, keep appropriate
+          support records, protect the service, and comply with law.
+        </p>
+      </section>
+
+      <section id="rights">
+        <h2>9. Your choices and rights</h2>
+        <p>You control your Packwise content directly. You can:</p>
+        <ul>
+          <li>review and edit activities, items, trips, notes, and packed status in the app;</li>
+          <li>export a copy in JSON format;</li>
+          <li>delete individual records or all local data from Settings;</li>
+          <li>clear Packwise storage using your browser or operating-system controls; and</li>
+          <li>disable or manage device backups in your operating-system settings.</li>
+        </ul>
+        <p>
+          Depending on where you live, privacy law may also give you rights to request access, correction, deletion,
+          restriction, portability, or objection concerning personal data a controller holds about you, and to lodge a
+          complaint with your local data-protection authority. MxApps generally has no copy of your on-device content,
+          so those requests are most effectively completed using the controls above. You may contact us about any
+          personal information contained in a support inquiry.
+        </p>
+        <p>
+          Requests about technical information processed independently by GitHub or a backup/share provider should be
+          directed to that provider.
+        </p>
+      </section>
+
+      <section id="children">
+        <h2>10. Children's privacy</h2>
+        <p>
+          Packwise is a general-audience utility and is not directed to children under 13. The app does not knowingly
+          collect children’s personal information for MxApps. A parent or guardian who believes a child sent personal
+          information to MxApps may contact us to request its deletion. On-device content can be removed with the app
+          and device controls described above.
+        </p>
+      </section>
+
+      <section id="changes">
+        <h2>11. Changes and contact</h2>
+        <h3>Changes to this policy</h3>
+        <p>
+          We may update this policy when Packwise features, distribution methods, or legal requirements change. The
+          effective date at the top will be revised. If a future feature changes how the app handles data—for example,
+          optional accounts or cloud sync—we will update this policy and provide any notice or choice required before
+          that processing begins.
+        </p>
+
+        <h3>Privacy contact</h3>
+        <address>
+          <strong>Alex Mengoli (MxApps)</strong><br />
+          Packwise privacy inquiries<br />
+          <a href="https://mxapps.dev">Contact through mxapps.dev</a>
+        </address>
+        <p>
+          Please do not include an exported Packwise file or sensitive trip details in a privacy inquiry unless they
+          are necessary for your request.
+        </p>
+      </section>
+    </div>
+  </article>
+</main>

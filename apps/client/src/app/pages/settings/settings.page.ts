@@ -5,10 +5,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterLink } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import type { Observable } from 'rxjs';
+import packageJson from '../../../../package.json';
 import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
 import type { ConfirmationDialogData } from '../../components/confirmation-dialog/confirmation-dialog.types';
 import { ActivityRepositoryService } from '../../services/activity.repository.service';
@@ -18,7 +20,14 @@ import { TripRepositoryService } from '../../services/trip.repository.service';
 
 @Component({
   selector: 'app-settings-page',
-  imports: [MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule, MatSnackBarModule],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    RouterLink,
+  ],
   templateUrl: './settings.page.html',
   styleUrl: './settings.page.css',
 })
@@ -37,6 +46,7 @@ export class SettingsPage {
   protected readonly importing = signal<boolean>(false);
 
   // data
+  protected readonly appVersion: string = packageJson.version;
   protected readonly busy = computed(
     (): boolean => this.deleting() || this.exporting() || this.importing(),
   );

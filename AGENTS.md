@@ -75,7 +75,7 @@ Keep concerns separated:
 - Local storage access should be isolated behind a small data layer.
 - Sync code, when added, must be isolated from local-only functionality.
 - The app must continue working when offline or signed out.
-- In the Angular app, prefer standalone components, `loadComponent`, and `bootstrapApplication` over new `NgModule` files.
+- In the Angular app, prefer standalone components, and `bootstrapApplication` over new `NgModule` files.
 
 ## Client application guidelines
 

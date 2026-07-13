@@ -35,6 +35,13 @@
   line-height: 1.6;
 }
 
+.settings-page__version {
+  margin: 0.5rem 0 0;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
 .settings-section {
   border-radius: 0.75rem;
   background: var(--mat-sys-surface-container-low);

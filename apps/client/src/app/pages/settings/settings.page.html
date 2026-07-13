@@ -69,6 +69,22 @@
       </mat-card-content>
     </mat-card>
 
+    <mat-card appearance="outlined" class="settings-section">
+      <mat-card-content>
+        <div class="settings-section__heading">
+          <h2 class="settings-section__title">About and legal</h2>
+          <p class="settings-section__subtitle">
+            Learn how Packwise handles data and protects your privacy.
+          </p>
+        </div>
+
+        <a mat-stroked-button class="data-actions__button" routerLink="/docs/privacy">
+          <mat-icon aria-hidden="true">privacy_tip</mat-icon>
+          Privacy policy
+        </a>
+      </mat-card-content>
+    </mat-card>
+
     <mat-card appearance="outlined" class="settings-section settings-section--danger">
       <mat-card-content>
         <div class="settings-section__heading">
@@ -90,5 +106,7 @@
         </button>
       </mat-card-content>
     </mat-card>
+
+    <p class="settings-page__version">Packwise version {{ appVersion }}</p>
   </div>
 </main>
