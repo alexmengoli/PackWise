@@ -48,6 +48,10 @@
   overflow: hidden;
 }
 
+.settings-section--about {
+  background: color-mix(in srgb, var(--mat-sys-primary-container) 36%, var(--mat-sys-surface));
+}
+
 .settings-section--danger {
   border-color: var(--mat-sys-error);
   background: color-mix(in srgb, var(--mat-sys-error-container) 32%, var(--mat-sys-surface));
@@ -81,6 +85,35 @@
 .settings-section__subtitle {
   color: var(--mat-sys-on-surface-variant);
   line-height: 1.5;
+}
+
+.creator-profile {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.creator-profile__label,
+.creator-profile__name,
+.creator-profile__company {
+  margin: 0;
+}
+
+.creator-profile__label {
+  color: var(--mat-sys-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.creator-profile__company {
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 500;
+}
+
+.creator-profile__name {
+  font-size: 1.125rem;
+  line-height: 1.3;
 }
 
 .data-actions {
